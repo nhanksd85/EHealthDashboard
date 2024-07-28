@@ -18,7 +18,7 @@
         <activity
             android:name=".FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.KiosskDashboard.Fullscreen">

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/btn_dvbt2_big"
+        android:state_pressed="true" />
+    <item android:drawable="@drawable/btn_dvbt2_big"
+        android:state_focused="true" />
+    <item android:drawable="@drawable/btn_dvbt2_big"
+        android:state_hovered="true" />
+    <item android:drawable="@drawable/btn_dvbt2_small" />
+</selector>

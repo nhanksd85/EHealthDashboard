@@ -12,4 +12,22 @@
     <color name="light_blue_A200">#FF40C4FF</color>
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="transparent">#00FFFFFF</color>
+    <color name="button01">#79b322</color>
+    <color name="button02">#2166b0</color>
+    <color name="button03">#ff6d12</color>
+    <color name="button04">#e0240b</color>
+    <color name="button05">#f5a70c</color>
+    <color name="button06">#e1abec</color>
+    <color name="button07">#b65c5c</color>
+    <color name="button08">#4b4da9</color>
+    <color name="default01">#00000000</color>
+    <color name="buttonbkg">#9a9fa8</color>
+    <color name="black_1">#33000000</color>
+
+
 </resources>
