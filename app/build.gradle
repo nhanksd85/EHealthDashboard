@@ -7,8 +7,8 @@ android {
 
     defaultConfig {
         applicationId "npnlab.smart.algriculture.kiosskdashboard"
-        minSdk 21
-        targetSdk 30
+        minSdk 19
+        targetSdk 19
         versionCode 1
         versionName "1.0"
 

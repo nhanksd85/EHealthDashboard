@@ -1,10 +1,12 @@
 package npnlab.smart.algriculture.kiosskdashboard;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -17,10 +19,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
@@ -146,14 +150,14 @@ public class FullscreenActivity extends AppCompatActivity {
         binding.dummyButton.setOnTouchListener(mDelayHideTouchListener);
 
         // Find the WebView by its unique ID
-        //WebView webView = findViewById(R.id.webContent);
+        WebView webView = findViewById(R.id.webContent);
 
         // loading url in the WebView.
         //webView.loadUrl("https://ar-hospital.vercel.app/");
         //webView.loadUrl("https://esnz-reactweather.netlify.app/");
-        //webView.loadUrl("https://weather.aniqa.dev/");
+        webView.loadUrl("http://lpnserver.net:51091/page");
         // this will enable the javascript.
-        //webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptEnabled(true);
 
         // WebViewClient allows you to handle
         // onPageFinished and override Url loading.
@@ -164,7 +168,7 @@ public class FullscreenActivity extends AppCompatActivity {
     }
     public List<NPNInstalledAppModel> getInstalledAppList() {
 
-        PackageManager packageManager  = peekAvailableContext().getPackageManager();
+        PackageManager packageManager  = this.peekAvailableContext().getPackageManager();
         List<ApplicationInfo> applist = packageManager.getInstalledApplications(0);
         List<NPNInstalledAppModel> mInstalledApps = new ArrayList<>();
 
@@ -276,8 +280,7 @@ public class FullscreenActivity extends AppCompatActivity {
     List<NPNInstalledAppModel> listInstalledApps;
     void setupHorizontalList() {
 
-        int angle = 90;
-
+        int angle = 80;
 
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
         //int itemH = (int)((float)displayMetrics.heightPixels * 0.3f);
@@ -361,17 +364,19 @@ public class FullscreenActivity extends AppCompatActivity {
 
 
             // Animation
-//            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, itemW);
-//            valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator()); // increase the speed first and then decrease
-//            valueAnimator.setDuration(200);
-//            valueAnimator.addUpdateListener(animation -> {
-//                int progress = Math.round((float)animation.getAnimatedValue());
-//
-//                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(itemW + progress, itemH);
-//                params2.setMargins(left  + (int)(20.0f / tanValue) * 2,0,2,0);
-//                horizontalView.getChildAt(idx).setLayoutParams(params2);
-//
-//            });
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, itemW);
+            valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator()); // increase the speed first and then decrease
+            valueAnimator.setDuration(200);
+            valueAnimator.addUpdateListener(animation -> {
+                int progress = Math.round((float)animation.getAnimatedValue());
+                
+
+                //Animation HEIGHT + 20
+                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(itemW + progress, itemH + 10);
+                params2.setMargins(left  + (int)(20.0f / tanValue) * 2,10,2,10);
+                horizontalView.getChildAt(idx).setLayoutParams(params2);
+
+            });
 
             Drawable logo;
             if (model.drawableLogo != null) {
@@ -382,24 +387,36 @@ public class FullscreenActivity extends AppCompatActivity {
 
             ParaItem item = new ParaItem(this, bkgColor, angle, logo, model.mName, (v, b) -> {
                 if(b) {
-                    //valueAnimator.start();
-                    LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams((int)(itemW * 1.5), itemH +  40);
-                    params2.setMargins(left + (int)(20.0f / tanValue) * 2 ,10,2,10);
-                    horizontalView.getChildAt(idx).setLayoutParams(params2);
+                    valueAnimator.start();
+                    //This part can be removed
+//                    LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams((int)(itemW * 1.5), itemH +  40);
+//                    params2.setMargins(left + (int)(20.0f / tanValue) * 2 ,10,2,10);
+//                    horizontalView.getChildAt(idx).setLayoutParams(params2);
                 } else {
-                    //valueAnimator.cancel();
+                    valueAnimator.cancel();
                     LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(itemW, itemH);
                     params2.setMargins(left ,30,2,0);
                     horizontalView.getChildAt(idx).setLayoutParams(params2);
                 }
             });
 
-
+            item.setOnClickListener(v -> {
+                launchAppFromPackageName(model.mPackage);
+            });
 
 
             horizontalView.addView(item, i, params);
 
             horizontalView.getChildAt(0).requestFocus();
+        }
+
+    }
+    public void launchAppFromPackageName(String packageName)
+    {
+        //Launch an application from package name
+        Intent launchIntent = peekAvailableContext().getPackageManager().getLaunchIntentForPackage(packageName);
+        if (launchIntent != null) {
+            peekAvailableContext().startActivity(launchIntent);
         }
 
     }

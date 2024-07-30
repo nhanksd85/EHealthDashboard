@@ -74,10 +74,10 @@ public class ParaImageView extends AppCompatImageView {
 
         if(currentHeight > itemH + 10) {
             // border
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(Color.parseColor("#00ffff"));
-            paint.setStrokeWidth(15);
-            canvas.drawPath(path, paint);
+            //paint.setStyle(Paint.Style.STROKE);
+            //paint.setColor(Color.parseColor("#00ffff"));
+            //paint.setStrokeWidth(15);
+            //canvas.drawPath(path, paint);
         }
 
 
