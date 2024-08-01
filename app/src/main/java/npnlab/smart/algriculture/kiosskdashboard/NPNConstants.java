@@ -32,16 +32,25 @@ public class NPNConstants {
 
         List<NPNChannelModel> list = new ArrayList<>();
 
-        list.add(new NPNChannelModel("TIVI DVB-T2", R.drawable.open10d, R.drawable.open10d, "com.mstar.tv.tvplayer.ui*28", R.drawable.mega_tvplus, "#009600"));
-
-        list.add(new NPNChannelModel("STV PLAY", R.drawable.open10d, R.drawable.open10d, "com.gviet.stv", R.drawable.stv, "#000096"));
+        list.add(new NPNChannelModel("PHIM HAY", 0, 0, "vn.ubc.phimmoi", R.drawable.mega_movie_2, "#870069"));
 
         list.add(new NPNChannelModel("YOUTUBE", R.drawable.open10d, R.drawable.open10d, "com.google.android.youtube.tv", R.drawable.mega_youtube,"#e30613"));
-        list.add(new NPNChannelModel("KARAOKE", R.drawable.open10d, R.drawable.open10d, "vn.ubc.ubctube", R.drawable.mega_ubctube_2, "#ffee00"));
+        list.add(new NPNChannelModel("VN TUBE", R.drawable.open10d, R.drawable.open10d, "vn.ubc.ubctube", R.drawable.vntube_newlog, "#eedd04"));
+        list.add(new NPNChannelModel("SMART TUBE", R.drawable.open10d, R.drawable.open10d, "com.firsthash.smartyoutubetv2.beta", R.drawable.smart_tube, "#ffffff"));
 
-        list.add(new NPNChannelModel("VTV GO", R.drawable.open10d, R.drawable.open10d, "vn.vtv.vtvgotv", R.drawable.mega_vtvgo, "#ce1100"));
 
-        list.add(new NPNChannelModel("CỬA HÀNG", R.drawable.open10d, R.drawable.open10d, "vn.ubc.ubcstore", R.drawable.mega_ubcstore,"#009600"));
+        list.add(new NPNChannelModel("TIVI ONLINE", R.drawable.open10d, R.drawable.open10d, "com.phienban.chotv", R.drawable.mega_tvplus, "#009600"));
+//
+//        list.add(new NPNChannelModel("STV PLAY", R.drawable.open10d, R.drawable.open10d, "com.gviet.stv", R.drawable.stv, "#000096"));
+
+
+
+        list.add(new NPNChannelModel("YOUTUBE", R.drawable.open10d, R.drawable.open10d, "com.google.android.youtube.tv", R.drawable.mega_youtube,"#e30613"));
+//        list.add(new NPNChannelModel("KARAOKE", R.drawable.open10d, R.drawable.open10d, "vn.ubc.ubctube", R.drawable.mega_ubctube_2, "#ffee00"));
+//
+//        list.add(new NPNChannelModel("VTV GO", R.drawable.open10d, R.drawable.open10d, "vn.vtv.vtvgotv", R.drawable.mega_vtvgo, "#ce1100"));
+//
+//        list.add(new NPNChannelModel("CỬA HÀNG", R.drawable.open10d, R.drawable.open10d, "vn.ubc.ubcstore", R.drawable.mega_ubcstore,"#009600"));
 
         return list;
 
@@ -91,7 +100,7 @@ public class NPNConstants {
     //public static String UBCTubeRepo = "http://ubc.dauthutruyenhinh.com:2080/UBCTubeRepo/TIVI/MSTAR/version.txt";
 
 
-    public static String KSD_KEY = "959b44cd6e6108eb3559b3f16baa833a";
+    public static String KSD_KEY = "6721dd6cc81ac8c2460a5c1260aa064a";
     public static String lon= "";
     public static String lat="";
 
@@ -103,14 +112,10 @@ public class NPNConstants {
             "com.google.android.voicesearch"
     };
 
-    public static String[] voice_channels = {
+    public static String[] city_names = {
             "Hồ Chí Minh",
-            "sctv 123456789",
-            "vtv cab cáp 1234567890",
-            "VTV 123456789",
-            "HTV 123456789",
-            "VTC 123456789",
-            "Vĩnh Long 12",
+            "Hà Nội",
+            "Vĩnh Long",
             "An Giang",
             "Vũng Tàu",
             "Bắc Giang",
@@ -120,8 +125,6 @@ public class NPNConstants {
             "Bến Tre",
             "Bình Định",
             "Bình Dương",
-            "Bình Phước",
-            "Bình Thuận",
             "Cà Mau",
             "Cao Bằng",
             "Đắc Lắc",
@@ -148,7 +151,6 @@ public class NPNConstants {
             "Nam Định",
             "Nghệ An",
             "Ninh Bình",
-            "Ninh Thuận",
             "Phú Thọ",
             "Quảng Bình",
             "Quảng Nam",
@@ -172,7 +174,6 @@ public class NPNConstants {
             "Cần Thơ",
             "Đà Nẵng",
             "Hải Phòng",
-            "Hà Nội"
     };
 
     public static String[] VietnameseSigns = new String[]{

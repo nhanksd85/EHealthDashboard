@@ -32,15 +32,18 @@ import android.widget.LinearLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.core.content.ContextCompat;
+import npnlab.smart.algriculture.kiosskdashboard.MVVM.VM.NPNHomeViewModel;
+import npnlab.smart.algriculture.kiosskdashboard.MVVM.View.NPNHomeView;
 import npnlab.smart.algriculture.kiosskdashboard.databinding.ActivityFullscreenBinding;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class FullscreenActivity extends AppCompatActivity {
+public class FullscreenActivity extends AppCompatActivity implements NPNHomeView {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -165,6 +168,10 @@ public class FullscreenActivity extends AppCompatActivity {
         horizontalView = findViewById(R.id.horizontal_list);
         listInstalledApps = getInstalledAppList();
         setupHorizontalList();
+        mViewModel = new NPNHomeViewModel();
+        mViewModel.attach(this, this);
+
+        requestWeatherData();
     }
     public List<NPNInstalledAppModel> getInstalledAppList() {
 
@@ -369,7 +376,7 @@ public class FullscreenActivity extends AppCompatActivity {
             valueAnimator.setDuration(200);
             valueAnimator.addUpdateListener(animation -> {
                 int progress = Math.round((float)animation.getAnimatedValue());
-                
+
 
                 //Animation HEIGHT + 20
                 LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(itemW + progress, itemH + 10);
@@ -475,5 +482,40 @@ public class FullscreenActivity extends AppCompatActivity {
 
 
     }
+    public int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
 
+    public String RemoveSign4VietnameseString(String str)
+    {
+        for (int i = 1; i < NPNConstants.VietnameseSigns.length; i++)
+        {
+            for (int j = 0; j < NPNConstants.VietnameseSigns[i].length(); j++)
+                str = str.replace(NPNConstants.VietnameseSigns[i].charAt(j), NPNConstants.VietnameseSigns[0].charAt(i-1));
+        }
+        return str;
+    }
+
+    NPNHomeViewModel mViewModel;
+    public void requestWeatherData(){
+        String url = "https://api.openweathermap.org/data/2.5/weather?q=xxxxxx&appid=yyyyyy&lang=vi&units=metric";
+        url = url.replaceAll("yyyyyy", NPNConstants.KSD_KEY);
+        int random_city_index = getRandomNumber(0, NPNConstants.city_names.length - 1);
+        random_city_index = 0;
+        url = url.replaceAll("xxxxxx", RemoveSign4VietnameseString(NPNConstants.city_names[random_city_index].toLowerCase()));
+        mViewModel.requestURL(url);
+        Log.d("ACLAB","Request Weather: " + url);
+        //var iconurl = "http://openweathermap.org/img/w/" + iconcode + ".png";
+
+    }
+
+    @Override
+    public void responseError(String message) {
+        Log.d("ACLAB","Request Weather: " + message);
+    }
+
+    @Override
+    public void onResponse(String message) {
+        Log.d("ACLAB","Request Weather: " + message);
+    }
 }

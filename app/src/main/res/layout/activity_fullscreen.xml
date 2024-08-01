@@ -46,7 +46,7 @@
         android:orientation="horizontal">
         <ImageView
             android:focusable="false"
-            android:src="@drawable/newtest2"
+            android:src="@drawable/back02"
             android:scaleType="fitXY"
             android:id="@+id/image_background"
             android:layout_width="match_parent"
@@ -124,6 +124,7 @@
 
                 </LinearLayout>
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.3">
@@ -136,7 +137,7 @@
                 </LinearLayout>
                 <!--layout for widget-->
                 <LinearLayout
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
 
@@ -150,9 +151,9 @@
                         android:textColor="#fff"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="25dp"
-                        android:text="Thứ 6 ngày 12"
-                        android:gravity = "center"/>
+                        android:textSize="30dp"
+                        android:text="Hồ Chí Minh  \nThứ 6 ngày 12"
+                        android:gravity = "start"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
