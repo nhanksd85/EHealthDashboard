@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
@@ -27,12 +28,21 @@ import android.view.WindowInsets;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.regex.Pattern;
 
 import androidx.core.content.ContextCompat;
 import npnlab.smart.algriculture.kiosskdashboard.MVVM.VM.NPNHomeViewModel;
@@ -127,13 +137,20 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         }
     };
     private ActivityFullscreenBinding binding;
-
+    TextView txtTemperature, txtHumidity, txtDescription;
+    ImageView imgMainIcon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityFullscreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        txtTemperature = findViewById(R.id.txtTemperature);
+        txtHumidity = findViewById(R.id.txtHumidity);
+        txtDescription = findViewById(R.id.txtDescription);
+        imgMainIcon = findViewById(R.id.imgIconMain);
+        txtCurrentDate = findViewById(R.id.txtCurrentDate);
 
         mVisible = true;
         mControlsView = binding.fullscreenContentControls;
@@ -170,8 +187,36 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         setupHorizontalList();
         mViewModel = new NPNHomeViewModel();
         mViewModel.attach(this, this);
+        usingCountDownTimer();
 
-        requestWeatherData();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            countDownTimer.cancel();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    CountDownTimer countDownTimer;
+
+    public void usingCountDownTimer() {
+        countDownTimer = new CountDownTimer(Long.MAX_VALUE, 10000) {
+
+            // This is called after every 10 sec interval.
+            public void onTick(long millisUntilFinished) {
+                Log.d("ACLAB","Using count down timer");
+                requestWeatherData();
+            }
+
+            public void onFinish() {
+                start();
+            }
+        }.start();
     }
     public List<NPNInstalledAppModel> getInstalledAppList() {
 
@@ -235,12 +280,14 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         delayedHide(100);
     }
 
+
     private void toggle() {
-        if (mVisible) {
-            hide();
-        } else {
-            show();
-        }
+//        if (mVisible) {
+//            hide();
+//
+//        } else {
+//            show();
+//        }
     }
 
     private void hide() {
@@ -285,6 +332,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     LinearLayout horizontalView;
     List<NPNChannelModel> listChannels;
     List<NPNInstalledAppModel> listInstalledApps;
+
     void setupHorizontalList() {
 
         int angle = 80;
@@ -418,8 +466,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         }
 
     }
-    public void launchAppFromPackageName(String packageName)
-    {
+
+    public void launchAppFromPackageName(String packageName) {
         //Launch an application from package name
         Intent launchIntent = peekAvailableContext().getPackageManager().getLaunchIntentForPackage(packageName);
         if (launchIntent != null) {
@@ -427,6 +475,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         }
 
     }
+
     void initChannelItemsOffline(boolean isLauncherDataExist) {
         // Load from launcher data
         List<NPNChannelModel> list = isLauncherDataExist ?
@@ -482,6 +531,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
 
 
     }
+
     public int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
@@ -497,11 +547,18 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     }
 
     NPNHomeViewModel mViewModel;
+    String currentCity = "Hồ Chí Minh";
+    TextView txtCurrentDate;
     public void requestWeatherData(){
         String url = "https://api.openweathermap.org/data/2.5/weather?q=xxxxxx&appid=yyyyyy&lang=vi&units=metric";
         url = url.replaceAll("yyyyyy", NPNConstants.KSD_KEY);
         int random_city_index = getRandomNumber(0, NPNConstants.city_names.length - 1);
-        random_city_index = 0;
+        //random_city_index = 0;
+
+        currentCity = NPNConstants.city_names[random_city_index];
+
+        txtCurrentDate.setText(currentCity);
+
         url = url.replaceAll("xxxxxx", RemoveSign4VietnameseString(NPNConstants.city_names[random_city_index].toLowerCase()));
         mViewModel.requestURL(url);
         Log.d("ACLAB","Request Weather: " + url);
@@ -512,10 +569,94 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     @Override
     public void responseError(String message) {
         Log.d("ACLAB","Request Weather: " + message);
+        currentCity = "Hồ Chí Minh";
+        requestWeatherData();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        countDownTimer.start();
     }
 
     @Override
     public void onResponse(String message) {
         Log.d("ACLAB","Request Weather: " + message);
+        try{
+            JSONObject currentWeather = new JSONObject(message);
+            JSONObject currentDate = currentWeather.getJSONArray("weather").getJSONObject(0);
+
+            String description = currentDate.getString("description");
+            String icon = "ico" + currentDate.getString("icon");
+
+            JSONObject currentMain = currentWeather.getJSONObject("main");
+
+
+            txtDescription.setText(description);
+            String[] splitTemp = currentMain.getString("feels_like").split(Pattern.quote("."));
+            txtTemperature.setText(splitTemp[0]);
+            txtHumidity.setText(currentMain.getString("humidity") +"%");
+
+
+            int id = getResources().getIdentifier(icon, "drawable", peekAvailableContext().getPackageName());
+            Drawable drawable = getResources().getDrawable(id);
+            imgMainIcon.setImageDrawable(drawable);
+
+            String urlHistory = "https://api.openweathermap.org/data/2.5/forecast/daily?q=xxxxxx&appid=6721dd6cc81ac8c2460a5c1260aa064a&lang=vi&units=metric&cnt=4";
+            urlHistory = urlHistory.replaceAll("xxxxxx", RemoveSign4VietnameseString(currentCity.toLowerCase()));
+            mViewModel.requestHistory(urlHistory);
+
+        }catch (Exception e){}
+    }
+    TextView txtTempMin, txtTempMax;
+    ImageView imgForecast;
+    @Override
+    public void onResponseForecast(String message) {
+        Log.d("ACLAB","Request Weather: " + message);
+        try{
+            JSONObject mainObject = new JSONObject(message);
+            JSONArray arrJson = mainObject.getJSONArray("list");
+            for(int i = 0; i < arrJson.length(); i++){
+                switch(i){
+                    case 0:
+                        txtTempMin = findViewById(R.id.txtT3Min);
+                        txtTempMax= findViewById(R.id.txtT3Max);
+                        imgForecast = findViewById(R.id.imgT3);
+                        break;
+                    case 1:
+                        txtTempMin = findViewById(R.id.txtT4Min);
+                        txtTempMax= findViewById(R.id.txtT4Max);
+                        imgForecast = findViewById(R.id.imgT4);
+                        break;
+                    case 2:
+                        txtTempMin = findViewById(R.id.txtT5Min);
+                        txtTempMax= findViewById(R.id.txtT5Max);
+                        imgForecast = findViewById(R.id.imgT5);
+                        break;
+                    case 3:
+                        txtTempMin = findViewById(R.id.txtT6Min);
+                        txtTempMax= findViewById(R.id.txtT6Max);
+                        imgForecast = findViewById(R.id.imgT6);
+                        break;
+                }
+                String[] splitDay = arrJson.getJSONObject(i).getJSONObject("temp").getString("day").split(Pattern.quote("."));
+                String[] splitNight = arrJson.getJSONObject(i).getJSONObject("temp").getString("night").split(Pattern.quote("."));
+
+                String icon = "ico"  +  arrJson.getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon");
+                int id = getResources().getIdentifier(icon, "drawable", peekAvailableContext().getPackageName());
+                Drawable drawable = getResources().getDrawable(id);
+
+
+
+                txtTempMin.setText( splitNight[0] + "°");
+                txtTempMax.setText( splitDay[0] + "°");
+
+                imgForecast.setImageDrawable(drawable);
+
+            }
+        }catch (Exception e){
+            Log.d("ACLAB", "There is an error");
+        }
+
     }
 }

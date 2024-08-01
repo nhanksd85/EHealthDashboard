@@ -156,10 +156,12 @@
                         android:gravity = "start"/>
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_weight="0.25"
-                        android:gravity="center">
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginTop = "12dp"
+                        >
                         <ImageView
+                            android:id = "@+id/imgIconMain"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:src="@drawable/weather_02" />
@@ -167,6 +169,7 @@
                             android:layout_width="72dp"
                             android:layout_height="70dp">
                             <TextView
+                                android:id = "@+id/txtTemperature"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start|center_vertical"
@@ -179,7 +182,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end|top"
                                 android:layout_marginTop="12dp"
-                                android:text="    °C"
+                                android:text="     °C"
                                 android:textColor="#fff"
                                 android:textSize="25dp"
                                 android:fontFamily="sans-serif-condensed-light" />
@@ -188,6 +191,7 @@
                             android:layout_width="140dp"
                             android:layout_height="70dp">
                             <TextView
+                                android:id = "@+id/txtDescription"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Có mưa vài nơi"
@@ -195,6 +199,7 @@
                                 android:layout_marginTop="12dp"
                                 android:layout_marginStart="5dp"/>
                             <TextView
+                                android:id = "@+id/txtHumidity"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#fff"
@@ -224,10 +229,12 @@
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <ImageView
+                                android:id = "@+id/imgT3"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:src="@drawable/weather_01"/>
                             <TextView
+                                android:id = "@+id/txtT3Max"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="31°"
@@ -235,6 +242,7 @@
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <TextView
+                                android:id = "@+id/txtT3Min"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="26°"
@@ -257,10 +265,12 @@
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <ImageView
+                                android:id = "@+id/imgT4"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:src="@drawable/weather_07"/>
                             <TextView
+                                android:id = "@+id/txtT4Max"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="31°"
@@ -268,6 +278,7 @@
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <TextView
+                                android:id = "@+id/txtT4Min"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="26°"
@@ -291,10 +302,12 @@
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <ImageView
+                                android:id = "@+id/imgT5"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:src="@drawable/weather_22"/>
                             <TextView
+                                android:id = "@+id/txtT5Max"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="32°"
@@ -302,6 +315,7 @@
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <TextView
+                                android:id = "@+id/txtT5Min"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="26°"
@@ -325,10 +339,12 @@
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <ImageView
+                                android:id = "@+id/imgT6"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:src="@drawable/weather_31"/>
                             <TextView
+                                android:id = "@+id/txtT6Max"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="32°"
@@ -336,6 +352,7 @@
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <TextView
+                                android:id = "@+id/txtT6Min"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="26°"

@@ -17,4 +17,17 @@ public class NPNHomeViewModel extends BaseViewModel<NPNHomeView>{
       }
     });
   }
+  public void requestHistory(String url){
+    requestGETWithURL(url, new ApiResponseListener<String>() {
+      @Override
+      public void onSuccess(String response) {
+        view.onResponseForecast(response);
+      }
+
+      @Override
+      public void onError(String error) {
+        view.responseError(error);
+      }
+    });
+  }
 }
