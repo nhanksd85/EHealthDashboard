@@ -5,6 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 
 import org.json.JSONArray;
 
@@ -133,6 +137,44 @@ public class NPNGlobalMethods {
             //Log.e("Exception", "File write failed: " + e.toString());
         }
     }
+    public static boolean checkWifiConnected(Context context)
+    {
+        ConnectivityManager connManager = (ConnectivityManager) (context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (mWifi.isConnected()) {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public static boolean checkLanConnected(Context context)
+    {
+        ConnectivityManager connManager = (ConnectivityManager) (context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET);
+
+        if(mWifi == null) return false;
+
+        try {
+            if (mWifi.isConnected()) {
+                return true;
+            } else {
+                return false;
+            }
+        }catch (Exception e){
+            return false;
+        }
+    }
+    public static int getWifiLevel(Context context){
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        int numberOfLevels = 5;
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        int level = WifiManager.calculateSignalLevel(wifiInfo.getRssi(), numberOfLevels);
+        return level;
+    }
+
     public static String readFromInternalFile(String fileName) {
         String id = "";
         File file = new File("/storage/sdcard0/", fileName);

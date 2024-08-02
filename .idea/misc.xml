@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidProject/NewLauncher/app/src/main/res/drawable/button_allapp.xml" value="0.143" />
+        <entry key="..\:/AndroidProject/NewLauncher/app/src/main/res/drawable/button_dvbt2.xml" value="0.143" />
+        <entry key="..\:/AndroidProject/NewLauncher/app/src/main/res/drawable/button_setting.xml" value="0.143" />
+        <entry key="..\:/AndroidProject/NewLauncher/app/src/main/res/drawable/button_source.xml" value="0.143" />
         <entry key="..\:/AndroidProject/NewLauncher/app/src/main/res/layout/activity_fullscreen.xml" value="0.2" />
         <entry key="..\:/Teaching/BKU/AndroidProject/KiosskDashboard/app/src/main/res/layout/activity_fullscreen.xml" value="0.22826086956521738" />
       </map>

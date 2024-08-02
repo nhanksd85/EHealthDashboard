@@ -46,7 +46,7 @@
         android:orientation="horizontal">
         <ImageView
             android:focusable="false"
-            android:src="@drawable/back02"
+            android:src="@drawable/newtest2"
             android:scaleType="fitXY"
             android:id="@+id/image_background"
             android:layout_width="match_parent"
@@ -72,7 +72,7 @@
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"                        android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginLeft="-10dp"
                     android:src="@drawable/android_tv_white"
                     android:scaleType="fitCenter"/>
 
@@ -85,7 +85,7 @@
                 <LinearLayout
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.8"
                     android:gravity="right"
                     android:layout_marginRight="10dp">
 
@@ -93,11 +93,41 @@
                     <DigitalClock
                         android:id="@+id/digitalClock1"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="45dp"
                         android:layout_marginRight="20dp"
                         android:textColor="#ffffff"
                         android:textStyle="bold"
+                        android:layout_gravity="center_vertical"
                         android:textSize="35dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnn_allapp"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/button_allapp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="20dp"/>
+
+                    <ImageButton
+                        android:id="@+id/btnn_folder"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/button_folder"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="20dp"/>
+
+
+                    <ImageButton
+                        android:id="@+id/btnn_setting"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/button_setting"
+                        android:layout_gravity="center_vertical"
+
+                        android:layout_marginRight="40sp"/>
 
                     <ImageView
                         android:id="@+id/imgWifiStatus"
@@ -149,13 +179,13 @@
                     <TextView
                         android:id="@+id/txtCurrentDate"
                         android:textColor="#fff"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="30dp"
-                        android:text="Hồ Chí Minh  \nThứ 6 ngày 12"
+                        android:textSize="25dp"
+                        android:text="Hồ Chí Minh - 06 tháng 12"
                         android:gravity = "start"/>
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:layout_marginTop = "12dp"

@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -21,6 +23,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +40,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -152,6 +158,9 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         imgMainIcon = findViewById(R.id.imgIconMain);
         txtCurrentDate = findViewById(R.id.txtCurrentDate);
 
+        imgWifiStatus = findViewById(R.id.imgWifiStatus);
+
+
         mVisible = true;
         mControlsView = binding.fullscreenContentControls;
         mContentView = binding.fullscreenContent;
@@ -170,14 +179,11 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         binding.dummyButton.setOnTouchListener(mDelayHideTouchListener);
 
         // Find the WebView by its unique ID
-        WebView webView = findViewById(R.id.webContent);
-
-        // loading url in the WebView.
-        //webView.loadUrl("https://ar-hospital.vercel.app/");
-        //webView.loadUrl("https://esnz-reactweather.netlify.app/");
-        webView.loadUrl("http://lpnserver.net:51091/page");
-        // this will enable the javascript.
-        webView.getSettings().setJavaScriptEnabled(true);
+//        WebView webView = findViewById(R.id.webContent);
+//
+//        webView.loadUrl("http://lpnserver.net:51091/page");
+//
+//        webView.getSettings().setJavaScriptEnabled(true);
 
         // WebViewClient allows you to handle
         // onPageFinished and override Url loading.
@@ -187,8 +193,22 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         setupHorizontalList();
         mViewModel = new NPNHomeViewModel();
         mViewModel.attach(this, this);
-        usingCountDownTimer();
 
+
+        setTimer(0, 1);
+        setTimer(1, 2);
+        usingCountDownTimer();
+        ImageView imgTopLogo = findViewById(R.id.top_logo);
+        if(NPNGlobalMethods.readFromInternalFile("logo.txt").equals("1")){
+            imgTopLogo.setImageDrawable(getResources().getDrawable(R.drawable.android_tv_crop));
+        }else{
+            imgTopLogo.setImageDrawable(getResources().getDrawable(R.drawable.dcar_icon));
+        }
+
+        txtT3 = findViewById(R.id.T3);
+        txtT4 = findViewById(R.id.T4);
+        txtT5 = findViewById(R.id.T5);
+        txtT6 = findViewById(R.id.T6);
     }
 
     @Override
@@ -210,7 +230,15 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
             // This is called after every 10 sec interval.
             public void onTick(long millisUntilFinished) {
                 Log.d("ACLAB","Using count down timer");
-                requestWeatherData();
+                if(timerFlag[0] == 1) {
+                    checkNetworkConnection();
+                    setTimer(0, 30);
+                }
+                if(timerFlag[1] == 1){
+                    requestWeatherData();
+                    setTimer(1, 10 * 6);
+                }
+                timerRun();
             }
 
             public void onFinish() {
@@ -267,7 +295,6 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         return mInstalledApps;
 
     }
-
 
 
     @Override
@@ -557,7 +584,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
 
         currentCity = NPNConstants.city_names[random_city_index];
 
-        txtCurrentDate.setText(currentCity);
+        String currentDate = new SimpleDateFormat("dd-MM", Locale.getDefault()).format(new Date());
+        txtCurrentDate.setText(currentCity + " - " + currentDate.replaceAll(Pattern.quote("-"), " tháng "));
 
         url = url.replaceAll("xxxxxx", RemoveSign4VietnameseString(NPNConstants.city_names[random_city_index].toLowerCase()));
         mViewModel.requestURL(url);
@@ -570,7 +598,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     public void responseError(String message) {
         Log.d("ACLAB","Request Weather: " + message);
         currentCity = "Hồ Chí Minh";
-        requestWeatherData();
+        //requestWeatherData();
     }
 
     @Override
@@ -578,6 +606,62 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         super.onPostResume();
         countDownTimer.start();
     }
+
+
+    public enum NETWORK_STATE{
+        NO_CONNECT,LAN, WIFI_0, WIFI_1, WIFI_2, WIFI_3, WIFI_4, WIFI_5
+    }
+    NETWORK_STATE network_state = NETWORK_STATE.WIFI_5;
+    ImageView imgWifiStatus;
+    private void checkNetworkConnection(){
+        if (NPNGlobalMethods.checkWifiConnected(this) == true) {
+            switch (NPNGlobalMethods.getWifiLevel(this)) {
+                case 1:
+                    if(network_state != NETWORK_STATE.WIFI_0) {
+                        imgWifiStatus.setImageDrawable(getResources().getDrawable(R.drawable.icon_wifi_0));
+                        network_state = NETWORK_STATE.WIFI_0;
+                    }
+                    break;
+                case 2:
+                    if(network_state != NETWORK_STATE.WIFI_1) {
+                        imgWifiStatus.setImageDrawable(getResources().getDrawable(R.drawable.icon_wifi_1));
+                        network_state = NETWORK_STATE.WIFI_1;
+                    }
+                    break;
+                case 3:
+                    if(network_state != NETWORK_STATE.WIFI_2) {
+                        imgWifiStatus.setImageDrawable(getResources().getDrawable(R.drawable.icon_wifi_2));
+                        network_state = NETWORK_STATE.WIFI_2;
+                    }
+                    break;
+                case 4:
+                    if(network_state != NETWORK_STATE.WIFI_3) {
+                        imgWifiStatus.setImageDrawable(getResources().getDrawable(R.drawable.icon_wifi_3));
+                        network_state = NETWORK_STATE.WIFI_3;
+                    }
+                    break;
+                default:
+                    if(network_state != NETWORK_STATE.WIFI_4) {
+                        imgWifiStatus.setImageDrawable(getResources().getDrawable(R.drawable.icon_wifi_3));
+                        network_state = NETWORK_STATE.WIFI_4;
+                    }
+                    break;
+            }
+        } else if (NPNGlobalMethods.checkLanConnected(this) == true) {
+            if(network_state != NETWORK_STATE.LAN) {
+                imgWifiStatus.setImageDrawable(getResources().getDrawable(R.drawable.icon_lan));
+                network_state = NETWORK_STATE.LAN;
+            }
+
+        } else {
+            if(network_state != NETWORK_STATE.NO_CONNECT) {
+                imgWifiStatus.setImageDrawable(getResources().getDrawable(R.drawable.icon_disconnect));
+                network_state = NETWORK_STATE.NO_CONNECT;
+            }
+        }
+    }
+
+
 
     @Override
     public void onResponse(String message) {
@@ -608,11 +692,13 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
 
         }catch (Exception e){}
     }
-    TextView txtTempMin, txtTempMax;
+    TextView txtTempMin, txtTempMax, txtT3, txtT4, txtT5, txtT6;
     ImageView imgForecast;
     @Override
     public void onResponseForecast(String message) {
         Log.d("ACLAB","Request Weather: " + message);
+        Calendar c = Calendar.getInstance();
+        int day = c.get(Calendar.DAY_OF_WEEK);
         try{
             JSONObject mainObject = new JSONObject(message);
             JSONArray arrJson = mainObject.getJSONArray("list");
@@ -622,21 +708,25 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
                         txtTempMin = findViewById(R.id.txtT3Min);
                         txtTempMax= findViewById(R.id.txtT3Max);
                         imgForecast = findViewById(R.id.imgT3);
+
                         break;
                     case 1:
                         txtTempMin = findViewById(R.id.txtT4Min);
                         txtTempMax= findViewById(R.id.txtT4Max);
                         imgForecast = findViewById(R.id.imgT4);
+
                         break;
                     case 2:
                         txtTempMin = findViewById(R.id.txtT5Min);
                         txtTempMax= findViewById(R.id.txtT5Max);
                         imgForecast = findViewById(R.id.imgT5);
+
                         break;
                     case 3:
                         txtTempMin = findViewById(R.id.txtT6Min);
                         txtTempMax= findViewById(R.id.txtT6Max);
                         imgForecast = findViewById(R.id.imgT6);
+
                         break;
                 }
                 String[] splitDay = arrJson.getJSONObject(i).getJSONObject("temp").getString("day").split(Pattern.quote("."));
@@ -654,9 +744,89 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
                 imgForecast.setImageDrawable(drawable);
 
             }
+
+            switch (day) {
+                case Calendar.SUNDAY:
+                    txtT3.setText("T2");txtT4.setText("T3");txtT5.setText("T4");txtT6.setText("T5");
+                    break;
+                case Calendar.MONDAY:
+                    txtT3.setText("T3");txtT4.setText("T4");txtT5.setText("T5");txtT6.setText("T6");
+                    break;
+                case Calendar.TUESDAY:
+                    txtT3.setText("T4");txtT4.setText("T5");txtT5.setText("T6");txtT6.setText("T7");
+                    break;
+                case Calendar.WEDNESDAY:
+                    txtT3.setText("T5");txtT4.setText("T6");txtT5.setText("T7");txtT6.setText("CN");
+                    break;
+                case Calendar.THURSDAY:
+                    txtT3.setText("T6");txtT4.setText("T7");txtT5.setText("CN");txtT6.setText("T2");
+                    break;
+                case Calendar.FRIDAY:
+                    txtT3.setText("T7");txtT4.setText("CN");txtT5.setText("T2");txtT6.setText("T3");
+                    break;
+                case Calendar.SATURDAY:
+                    txtT3.setText("CN");txtT4.setText("T2");txtT5.setText("T3");txtT6.setText("T4");
+                    break;
+            }
+
         }catch (Exception e){
             Log.d("ACLAB", "There is an error");
         }
 
+    }
+
+
+    private int[] timerCounter = new int[10];
+    private int[] timerFlag = new int[10];
+    private void setTimer(int index, int counter){
+        timerCounter[index] = counter;
+        timerFlag[index] = 0;
+    }
+    private void timerRun(){
+        for(int i = 0; i < 10; i++){
+            if(timerCounter[i] > 0){
+                timerCounter[i]--;
+                if(timerCounter[i] <= 0) timerFlag[i] = 1;
+            }
+        }
+    }
+
+    int counterBackPress = 0;
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            counterBackPress++;
+            if (counterBackPress > 5) {
+                counterBackPress = 0;
+                generateID();
+            }
+        }
+        return true;
+    }
+
+    private  void generateID()
+    {
+        if(NPNGlobalMethods.readFromInternalFile("logo.txt").equals("1")){
+            NPNGlobalMethods.writeToInternalFile("logo.txt", "0");
+        }else{
+            NPNGlobalMethods.writeToInternalFile("logo.txt", "1");
+        }
+        displayUpdateDialog();
+    }
+
+    public void displayUpdateDialog(){
+        ImageView image = new ImageView(this);
+        image.setImageResource(R.drawable.bcd);
+
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this).
+                        setPositiveButton("", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).
+                        setView(image);
+        builder.create().show();
     }
 }
