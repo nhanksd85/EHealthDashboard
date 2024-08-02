@@ -147,7 +147,6 @@ public class NPNConstants {
             "Nam Định",
             "Ninh Bình",
             "Phú Thọ",
-            "Quảng Nam",
             "Quảng Ngãi",
             "Quảng Trị",
             "Sóc Trăng",

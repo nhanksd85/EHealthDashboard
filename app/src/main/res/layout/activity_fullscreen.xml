@@ -212,7 +212,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end|top"
                                 android:layout_marginTop="12dp"
-                                android:text="     °C"
+                                android:layout_marginLeft="5dp"
+                                android:text="°C"
                                 android:textColor="#fff"
                                 android:textSize="25dp"
                                 android:fontFamily="sans-serif-condensed-light" />
@@ -255,7 +256,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/T3"
                                 android:text="T3"
-                                android:textColor="#ccc"
+                                android:textColor="#fff"
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <ImageView
@@ -268,7 +269,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="31°"
-                                android:textColor="#ccc"
+                                android:textColor="#fff"
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <TextView
@@ -276,7 +277,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="26°"
-                                android:textColor="#ccc"
+                                android:textColor="#fff"
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                         </LinearLayout>
@@ -291,7 +292,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/T4"
                                 android:text="T4"
-                                android:textColor="#ccc"
+                                android:textColor="#fff"
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <ImageView
@@ -304,7 +305,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="31°"
-                                android:textColor="#ccc"
+                                android:textColor="#fff"
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <TextView
@@ -312,7 +313,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="26°"
-                                android:textColor="#ccc"
+                                android:textColor="#fff"
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
 
@@ -328,7 +329,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/T5"
                                 android:text="T5"
-                                android:textColor="#ccc"
+                                android:textColor="#fff"
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <ImageView
@@ -341,7 +342,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="32°"
-                                android:textColor="#ccc"
+                                android:textColor="#fff"
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <TextView
@@ -349,7 +350,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="26°"
-                                android:textColor="#ccc"
+                                android:textColor="#fff"
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
 
@@ -365,7 +366,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/T6"
                                 android:text="T6"
-                                android:textColor="#ccc"
+                                android:textColor="#fff"
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <ImageView
@@ -378,7 +379,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="32°"
-                                android:textColor="#ccc"
+                                android:textColor="#fff"
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
                             <TextView
@@ -386,7 +387,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="26°"
-                                android:textColor="#ccc"
+                                android:textColor="#fff"
                                 android:textSize="20dp"
                                 android:fontFamily="sans-serif-condensed-light" />
 

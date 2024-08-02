@@ -671,6 +671,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
             JSONObject currentDate = currentWeather.getJSONArray("weather").getJSONObject(0);
 
             String description = currentDate.getString("description");
+
+            description = description.substring(0, 1).toUpperCase() + description.substring(1).toLowerCase();
             String icon = "ico" + currentDate.getString("icon");
 
             JSONObject currentMain = currentWeather.getJSONObject("main");
