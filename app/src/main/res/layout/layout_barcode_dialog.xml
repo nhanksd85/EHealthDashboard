@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp">
+    <EditText
+        android:inputType="number"
+        android:textIsSelectable="true"
+        android:textColor="@color/white"
+        android:layout_marginTop="15dp"
+        android:hint="Mật khẩu"
+        android:id="@+id/edt_pass"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+
+    <EditText
+        android:inputType="number"
+        android:textIsSelectable="true"
+        android:textColor="@color/white"
+        android:layout_marginTop="1dp"
+        android:hint="Mã đại lý"
+        android:id="@+id/edt_affiliate"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+
+    <ImageView
+        android:scaleType="fitCenter"
+        android:layout_weight="0.5"
+        android:id="@+id/img_barcode"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+    <TextView
+        android:textColor="@color/white"
+        android:id="@+id/text_serial"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:text=""
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_hightlight"
+            android:id="@+id/btn_ok"
+            android:text="OK"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+
+        <Button
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_hightlight"
+            android:id="@+id/btn_close"
+            android:text="THOÁT"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+</LinearLayout>

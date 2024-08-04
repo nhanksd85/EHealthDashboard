@@ -14,6 +14,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -145,6 +146,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     private ActivityFullscreenBinding binding;
     TextView txtTemperature, txtHumidity, txtDescription;
     ImageView imgMainIcon;
+    ImageView imgTopLogo;
+    ImageButton btnAllApp, btnFolder, btnSetting;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,7 +201,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         setTimer(0, 1);
         setTimer(1, 2);
         usingCountDownTimer();
-        ImageView imgTopLogo = findViewById(R.id.top_logo);
+        imgTopLogo = findViewById(R.id.top_logo);
         if(NPNGlobalMethods.readFromInternalFile("logo.txt").equals("1")){
             imgTopLogo.setImageDrawable(getResources().getDrawable(R.drawable.android_tv_crop));
         }else{
@@ -209,8 +212,35 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         txtT4 = findViewById(R.id.T4);
         txtT5 = findViewById(R.id.T5);
         txtT6 = findViewById(R.id.T6);
+
+
+        btnAllApp = findViewById(R.id.btnn_allapp);
+        btnAllApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchAppFromPackageName("com.entertainment.npnlab.npntivi.NPNAppManager");
+            }
+        });
+
+        btnFolder = findViewById(R.id.btnn_folder);
+        btnFolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchAppFromPackageName("com.droidlogic.FileBrower");
+            }
+        });
+
+        btnSetting = findViewById(R.id.btnn_setting);
+        btnSetting.setOnClickListener(v -> {
+            launchAppFromPackageName("com.android.tv.settings");
+        });
+
     }
 
+
+    public void stateChange(String action, String data) {
+        Log.d("NPN", "Something changed here: " + action);
+    }
     @Override
     protected void onPause() {
         super.onPause();
@@ -392,7 +422,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         initChannelItemsOffline(false);
         List<NPNChannelModel> list = listChannels;
 
-        for(int i=0; i<listInstalledApps.size(); ++i) {
+        //listInstalledApps.size()
+        for(int i=0; i<0; ++i) {
             NPNInstalledAppModel appModel = listInstalledApps.get(i);
             // Check if the installed app already be in the list or not
             boolean isExisted = false;
@@ -494,11 +525,33 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
 
     }
 
+    String activeAdminPackage = "";
     public void launchAppFromPackageName(String packageName) {
         //Launch an application from package name
-        Intent launchIntent = peekAvailableContext().getPackageManager().getLaunchIntentForPackage(packageName);
-        if (launchIntent != null) {
-            peekAvailableContext().startActivity(launchIntent);
+        activeAdminPackage = packageName;
+        if(packageName.contains("NPNAppManager") ||
+                packageName.contains("tv.settings") ||
+                packageName.contains("droidlogic.FileBrower") ||
+                packageName.contains("vn.ubc.ubcstore")) {
+
+            String serial = "abcdcadfewfewafew";
+            Bitmap data = NPNGlobalMethods.getBarcode("abcdcadfewfewafew");
+            NPNGlobalMethods.showBarCodeDialog(this, data, serial, new NPNDialogBarcodeHandler() {
+                @Override
+                public void onOkButtonClicked(String pass, String agency) {
+                    if(pass.contains("1147") || agency.contains("1147")){
+                        Intent launchIntent = peekAvailableContext().getPackageManager().getLaunchIntentForPackage(packageName);
+                        if (launchIntent != null) {
+                            peekAvailableContext().startActivity(launchIntent);
+                        }
+                    }
+                }
+            });
+        }else {
+            Intent launchIntent = peekAvailableContext().getPackageManager().getLaunchIntentForPackage(packageName);
+            if (launchIntent != null) {
+                peekAvailableContext().startActivity(launchIntent);
+            }
         }
 
     }
@@ -796,7 +849,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     int counterBackPress = 0;
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_1) {
             counterBackPress++;
             if (counterBackPress > 5) {
                 counterBackPress = 0;
@@ -810,8 +863,10 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     {
         if(NPNGlobalMethods.readFromInternalFile("logo.txt").equals("1")){
             NPNGlobalMethods.writeToInternalFile("logo.txt", "0");
+            imgTopLogo.setImageDrawable(getResources().getDrawable(R.drawable.dcar_icon));
         }else{
             NPNGlobalMethods.writeToInternalFile("logo.txt", "1");
+            imgTopLogo.setImageDrawable(getResources().getDrawable(R.drawable.android_tv_crop));
         }
         displayUpdateDialog();
     }

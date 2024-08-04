@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "npn.npnlauncher.dcar.s905am.test",
+  "applicationId": "npn.npnlauncher.dcar.family",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 1,
-      "versionName": "1.0",
+      "versionCode": 3000,
+      "versionName": "3.0.0.0",
       "outputFile": "app-release.apk"
     }
   ],

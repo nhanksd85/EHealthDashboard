@@ -1,15 +1,32 @@
 package npnlab.smart.algriculture.kiosskdashboard;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Environment;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 
 import java.io.BufferedReader;
@@ -21,8 +38,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
+
+import androidx.core.content.ContextCompat;
 
 public class NPNGlobalMethods {
     public static List<NPNChannelModel> getChannelModelFromLauncherData() {
@@ -126,7 +147,7 @@ public class NPNGlobalMethods {
     {
         try {
 
-            File root = new File("/storage/sdcard0/");
+            File root = new File(NPNConstants.rootStorageDir);
             File gpxfile = new File(root, fileName);
             FileWriter writer = new FileWriter(gpxfile);
             writer.append(data);
@@ -177,7 +198,7 @@ public class NPNGlobalMethods {
 
     public static String readFromInternalFile(String fileName) {
         String id = "";
-        File file = new File("/storage/sdcard0/", fileName);
+        File file = new File(NPNConstants.rootStorageDir, fileName);
         if (file.exists())   // check if file exist
         {
             try {
@@ -256,5 +277,122 @@ public class NPNGlobalMethods {
         return bitmap;
     }
 
+
+    public static void showBarCodeDialog(Context context, Bitmap image, String displaySerial
+            , @Nullable NPNDialogBarcodeHandler handler) {
+        // custom dialog
+        final Dialog dialog = new Dialog(context);
+        //dialog.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        dialog.setContentView(R.layout.layout_barcode_dialog);
+
+        //dialog.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.layout_dialog_title);
+        //TextView title = dialog.findViewById(R.id.text_title);
+        //title.setText("THIẾT LẬP ĐẠI LÝ");
+        //title.setTextColor(ContextCompat.getColor(context, R.color.white));
+
+        ImageView imgBarCode = dialog.findViewById(R.id.img_barcode);
+        imgBarCode.setImageBitmap(image);
+        EditText pass = dialog.findViewById(R.id.edt_pass);
+        EditText agency = dialog.findViewById(R.id.edt_affiliate);
+
+        agency.setShowSoftInputOnFocus(false);
+        pass.setShowSoftInputOnFocus(false);
+        pass.requestFocus();
+
+        TextView textSerial = dialog.findViewById(R.id.text_serial);
+        textSerial.setText( "IMEI: " + displaySerial);
+        Button btnOK = dialog.findViewById(R.id.btn_ok);
+        btnOK.setOnClickListener(view -> {
+            dialog.cancel();
+            if (handler!=null) {
+                handler.onOkButtonClicked(pass.getText().toString(), agency.getText().toString());
+                //((MainActivity)context).goFullscreen();
+            }
+        });
+
+        Button btnCancel = dialog.findViewById(R.id.btn_close);
+        btnCancel.setOnClickListener(view -> {
+            dialog.cancel();
+            //((MainActivity)context).goFullscreen();
+        });
+
+        Point size = NPNGlobalMethods.getScreenSize((Activity) context);
+
+        dialog.setOnCancelListener(dialogInterface -> {
+            //((MainActivity)context).goFullscreen();
+        });
+
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_bkg);
+        dialog.getWindow().setLayout((int)((float)size.x * 0.3), (int) ((float)size.y * 0.8));
+        dialog.show();
+
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+    }
+
+    public static Point getScreenSize(Activity activity) {
+        Point screenSize = new Point();
+        activity.getWindowManager().getDefaultDisplay().getSize(screenSize);
+        return screenSize;
+    }
+    public static Bitmap getBarcode(String data) {
+        // barcode image
+        Bitmap bitmap = null;
+        try {
+
+            bitmap = encodeAsBitmap(data, BarcodeFormat.QR_CODE, 600, 300);
+
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+    private static final int WHITE = 0xFFFFFFFF;
+    private static final int BLACK = 0xFF000000;
+
+    public static Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int img_width, int img_height) throws WriterException {
+        String contentsToEncode = contents;
+        if (contentsToEncode == null) {
+            return null;
+        }
+        Map<EncodeHintType, Object> hints = null;
+        String encoding = guessAppropriateEncoding(contentsToEncode);
+        if (encoding != null) {
+            hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+            hints.put(EncodeHintType.CHARACTER_SET, encoding);
+        }
+        MultiFormatWriter writer = new MultiFormatWriter();
+        BitMatrix result;
+        try {
+            result = writer.encode(contentsToEncode, format, img_width, img_height, hints);
+        } catch (IllegalArgumentException iae) {
+            // Unsupported format
+            return null;
+        }
+        int width = result.getWidth();
+        int height = result.getHeight();
+        int[] pixels = new int[width * height];
+        for (int y = 0; y < height; y++) {
+            int offset = y * width;
+            for (int x = 0; x < width; x++) {
+                pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+            }
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height,
+                Bitmap.Config.ARGB_8888);
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+        return bitmap;
+    }
+
+    private static String guessAppropriateEncoding(CharSequence contents) {
+        // Very crude at the moment
+        for (int i = 0; i < contents.length(); i++) {
+            if (contents.charAt(i) > 0xFF) {
+                return "UTF-8";
+            }
+        }
+        return null;
+    }
 
 }
