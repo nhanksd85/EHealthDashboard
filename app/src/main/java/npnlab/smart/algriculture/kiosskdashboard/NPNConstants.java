@@ -117,7 +117,10 @@ public class NPNConstants {
     //public static String UBCTubeRepo = "http://ubc.dauthutruyenhinh.com:2080/UBCTubeRepo/TIVI/MSTAR/version.txt";
 
 
-    public static String KSD_KEY = "6721dd6cc81ac8c2460a5c1260aa064a";
+    public static String KSD_KEY_1 = "6721dd";
+    public static String KSD_KEY_2 = "6cc81ac8c";
+    public static String KSD_KEY_3 = "2460a5c12";
+    public static String KSD_KEY_4 = "60aa064a";
     public static String lon= "";
     public static String lat="";
 

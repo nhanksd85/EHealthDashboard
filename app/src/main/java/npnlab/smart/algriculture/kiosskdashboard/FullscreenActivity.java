@@ -631,7 +631,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     TextView txtCurrentDate;
     public void requestWeatherData(){
         String url = "https://api.openweathermap.org/data/2.5/weather?q=xxxxxx&appid=yyyyyy&lang=vi&units=metric";
-        url = url.replaceAll("yyyyyy", NPNConstants.KSD_KEY);
+        url = url.replaceAll("yyyyyy", NPNConstants.KSD_KEY_1 + NPNConstants.KSD_KEY_2 + NPNConstants.KSD_KEY_3 + NPNConstants.KSD_KEY_4);
         int random_city_index = getRandomNumber(0, NPNConstants.city_names.length - 1);
         //random_city_index = 0;
 
