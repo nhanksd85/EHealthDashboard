@@ -7,6 +7,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -22,6 +23,8 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -147,7 +150,78 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     TextView txtTemperature, txtHumidity, txtDescription;
     ImageView imgMainIcon;
     ImageView imgTopLogo;
-    ImageButton btnAllApp, btnFolder, btnSetting;
+    ImageButton btnAllApp, btnFolder, btnSetting, btnVoice;
+
+    private static final int REQ_CODE_SPEECH_INPUT = 100;
+    public void startVoiceInput() {
+
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        //intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,"vi-VN");
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Xin mời nói...");
+
+        try {
+            //isProcessingSearch = true;
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+            //layoutHeader.setVisibility(View.INVISIBLE);
+        } catch (ActivityNotFoundException a) {
+            //isProcessingSearch = false;
+            //layoutHeader.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+
+
+    private int DATA_CHECKING = 0;
+    private TextToSpeech niceTTS;
+
+    public void talkToMe(final String sentence) {
+
+        Log.d("ChatGPT", "Talk to me " + sentence);
+        String speakWords = sentence;
+        niceTTS.speak(speakWords, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+    public void processV9(String msg){
+        if(msg.contains("xin chào")){
+            talkToMe("Xin chào bạn, tôi là trợ lý ảo nhân tạo, tôi có thể giúp gì cho bạn?");
+        }else if(msg.contains("các điểm du lịch")){
+            String output = "Có nhiều điểm du lịch thú vị ở Vinh, như Núi Quyết - Đền thờ Vua Quang Trung, Quảng trường và tượng đài Hồ Chí Minh, Thành cổ Vinh hay Khu du lịch hồ Cửa Nam";
+            talkToMe(output);
+        }else if(msg.contains("thời tiết hôm nay")){
+            String output = txtDescription.getText().toString();
+            talkToMe("hôm nay thời tiết ở Vinh" + output);
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //do they have the data
+        if(requestCode == REQ_CODE_SPEECH_INPUT){
+            Log.d("ChatGPT", requestCode + "****" +resultCode );
+            if (resultCode == RESULT_OK && null != data) {
+                ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                Log.d("ChatGPT", result.get(0));
+
+                if (result.size() > 0) {
+                    String msg = result.get(0).toLowerCase().trim();
+                    processV9(msg);
+                }
+            }else{
+                //isProcessingSearch = false;
+                Log.d("mqtt", "You are here");
+                if(data != null){
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    Log.d("ChatGPT", result.get(0));
+                }
+            }
+        }
+    }
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,18 +256,20 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         binding.dummyButton.setOnTouchListener(mDelayHideTouchListener);
 
         // Find the WebView by its unique ID
-//        WebView webView = findViewById(R.id.webContent);
+        WebView webView = findViewById(R.id.webContent);
 //
-//        webView.loadUrl("http://lpnserver.net:51091/page");
-//
-//        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl("https://www.traveloka.com/vi-vn/explore/destination/dia-diem-check-in-o-vinh/166450");
+
+        webView.getSettings().setJavaScriptEnabled(true);
 
         // WebViewClient allows you to handle
         // onPageFinished and override Url loading.
         //webView.setWebViewClient(new WebViewClient());
         horizontalView = findViewById(R.id.horizontal_list);
         listInstalledApps = getInstalledAppList();
-        setupHorizontalList();
+
+        //setupHorizontalList();
+
         mViewModel = new NPNHomeViewModel();
         mViewModel.attach(this, this);
 
@@ -201,12 +277,13 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         setTimer(0, 1);
         setTimer(1, 2);
         usingCountDownTimer();
+
         imgTopLogo = findViewById(R.id.top_logo);
-        if(NPNGlobalMethods.readFromInternalFile("logo.txt").equals("1")){
-            imgTopLogo.setImageDrawable(getResources().getDrawable(R.drawable.android_tv_crop));
-        }else{
-            imgTopLogo.setImageDrawable(getResources().getDrawable(R.drawable.dcar_icon));
-        }
+//        if(NPNGlobalMethods.readFromInternalFile("logo.txt").equals("1")){
+//            imgTopLogo.setImageDrawable(getResources().getDrawable(R.drawable.android_tv_crop));
+//        }else{
+//            imgTopLogo.setImageDrawable(getResources().getDrawable(R.drawable.dcar_icon));
+//        }
 
         txtT3 = findViewById(R.id.T3);
         txtT4 = findViewById(R.id.T4);
@@ -233,6 +310,26 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         btnSetting = findViewById(R.id.btnn_setting);
         btnSetting.setOnClickListener(v -> {
             launchAppFromPackageName("com.android.tv.settings");
+        });
+
+        btnVoice = findViewById(R.id.btnn_voice);
+        btnVoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startVoiceInput();
+            }
+        });
+
+        niceTTS = new TextToSpeech(peekAvailableContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int initStatus) {
+                if (initStatus == TextToSpeech.SUCCESS) {
+                    niceTTS.setLanguage(Locale.forLanguageTag("VI"));
+                    //talkToMe("Xin chào các bạn, tôi là hệ thống trợ lý ảo nhân tạo dựa trên Chat gi pi ti");
+                }else{
+                    Log.d("ChatGPT", "Init fail");
+                }
+            }
         });
 
     }
@@ -392,7 +489,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
 
     void setupHorizontalList() {
 
-        int angle = 80;
+        int angle = 90;
 
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
         //int itemH = (int)((float)displayMetrics.heightPixels * 0.3f);
@@ -527,31 +624,14 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
 
     String activeAdminPackage = "";
     public void launchAppFromPackageName(String packageName) {
-        //Launch an application from package name
-        activeAdminPackage = packageName;
-        if(packageName.contains("NPNAppManager") ||
-                packageName.contains("tv.settings") ||
-                packageName.contains("droidlogic.FileBrower") ||
-                packageName.contains("vn.ubc.ubcstore")) {
+        if(packageName.contains("weather")){
 
-            String serial = "abcdcadfewfewafew";
-            Bitmap data = NPNGlobalMethods.getBarcode("abcdcadfewfewafew");
-            NPNGlobalMethods.showBarCodeDialog(this, data, serial, new NPNDialogBarcodeHandler() {
-                @Override
-                public void onOkButtonClicked(String pass, String agency) {
-                    if(pass.contains("1147") || agency.contains("1147")){
-                        Intent launchIntent = peekAvailableContext().getPackageManager().getLaunchIntentForPackage(packageName);
-                        if (launchIntent != null) {
-                            peekAvailableContext().startActivity(launchIntent);
-                        }
-                    }
-                }
-            });
-        }else {
-            Intent launchIntent = peekAvailableContext().getPackageManager().getLaunchIntentForPackage(packageName);
-            if (launchIntent != null) {
-                peekAvailableContext().startActivity(launchIntent);
-            }
+        }else if(packageName.contains("flight_info")){
+
+        }else if(packageName.contains("travel_info")){
+
+        }else if(packageName.contains("assistant")){
+
         }
 
     }
@@ -633,12 +713,12 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         String url = "https://api.openweathermap.org/data/2.5/weather?q=xxxxxx&appid=yyyyyy&lang=vi&units=metric";
         url = url.replaceAll("yyyyyy", NPNConstants.KSD_KEY_1 + NPNConstants.KSD_KEY_2 + NPNConstants.KSD_KEY_3 + NPNConstants.KSD_KEY_4);
         int random_city_index = getRandomNumber(0, NPNConstants.city_names.length - 1);
-        //random_city_index = 0;
+        random_city_index = 0;
 
         currentCity = NPNConstants.city_names[random_city_index];
 
         String currentDate = new SimpleDateFormat("dd-MM", Locale.getDefault()).format(new Date());
-        txtCurrentDate.setText(currentCity + " - " + currentDate.replaceAll(Pattern.quote("-"), " tháng "));
+        txtCurrentDate.setText("Thành phố Vinh " + " - " + currentDate.replaceAll(Pattern.quote("-"), " tháng "));
 
         url = url.replaceAll("xxxxxx", RemoveSign4VietnameseString(NPNConstants.city_names[random_city_index].toLowerCase()));
         mViewModel.requestURL(url);
@@ -741,13 +821,13 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
             Drawable drawable = getResources().getDrawable(id);
             imgMainIcon.setImageDrawable(drawable);
 
-            String urlHistory = "https://api.openweathermap.org/data/2.5/forecast/daily?q=xxxxxx&appid=6721dd6cc81ac8c2460a5c1260aa064a&lang=vi&units=metric&cnt=4";
+            String urlHistory = "https://api.openweathermap.org/data/2.5/forecast/daily?q=xxxxxx&appid=6721dd6cc81ac8c2460a5c1260aa064a&lang=vi&units=metric&cnt=8";
             urlHistory = urlHistory.replaceAll("xxxxxx", RemoveSign4VietnameseString(currentCity.toLowerCase()));
             mViewModel.requestHistory(urlHistory);
 
         }catch (Exception e){}
     }
-    TextView txtTempMin, txtTempMax, txtT3, txtT4, txtT5, txtT6;
+    TextView txtTempMin, txtTempMax, txtT3, txtT4, txtT5, txtT6, txtT7, txtCN, txtT8, txtT9;
     ImageView imgForecast;
     @Override
     public void onResponseForecast(String message) {
@@ -783,6 +863,26 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
                         imgForecast = findViewById(R.id.imgT6);
 
                         break;
+                    case 4:
+                        txtTempMin = findViewById(R.id.txtT7Min);
+                        txtTempMax= findViewById(R.id.txtT7Max);
+                        imgForecast = findViewById(R.id.imgT7);
+                        break;
+                    case 5:
+                        txtTempMin = findViewById(R.id.txtCNMin);
+                        txtTempMax= findViewById(R.id.txtCNMax);
+                        imgForecast = findViewById(R.id.imgCN);
+                        break;
+                    case 6:
+                        txtTempMin = findViewById(R.id.txtT8Min);
+                        txtTempMax= findViewById(R.id.txtT8Max);
+                        imgForecast = findViewById(R.id.imgT8);
+                        break;
+                    case 7:
+                        txtTempMin = findViewById(R.id.txtT9Min);
+                        txtTempMax= findViewById(R.id.txtT9Max);
+                        imgForecast = findViewById(R.id.imgT9);
+                        break;
                 }
                 String[] splitDay = arrJson.getJSONObject(i).getJSONObject("temp").getString("day").split(Pattern.quote("."));
                 String[] splitNight = arrJson.getJSONObject(i).getJSONObject("temp").getString("night").split(Pattern.quote("."));
@@ -802,25 +902,25 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
 
             switch (day) {
                 case Calendar.SUNDAY:
-                    txtT3.setText("T2");txtT4.setText("T3");txtT5.setText("T4");txtT6.setText("T5");
+                    txtT3.setText("T2");txtT4.setText("T3");txtT5.setText("T4");txtT6.setText("T5"); txtT7.setText("T6");txtCN.setText("T7");
                     break;
                 case Calendar.MONDAY:
-                    txtT3.setText("T3");txtT4.setText("T4");txtT5.setText("T5");txtT6.setText("T6");
+                    txtT3.setText("T3");txtT4.setText("T4");txtT5.setText("T5");txtT6.setText("T6");txtT7.setText("T7");txtCN.setText("CN");txtT8.setText("T2");txtT9.setText("T3");
                     break;
                 case Calendar.TUESDAY:
-                    txtT3.setText("T4");txtT4.setText("T5");txtT5.setText("T6");txtT6.setText("T7");
+                    txtT3.setText("T4");txtT4.setText("T5");txtT5.setText("T6");txtT6.setText("T7");txtT7.setText("CN");txtCN.setText("T2");txtT8.setText("T3");txtT9.setText("T4");
                     break;
                 case Calendar.WEDNESDAY:
-                    txtT3.setText("T5");txtT4.setText("T6");txtT5.setText("T7");txtT6.setText("CN");
+                    txtT3.setText("T5");txtT4.setText("T6");txtT5.setText("T7");txtT6.setText("CN");txtT7.setText("T2");txtCN.setText("T3");txtT8.setText("T4");txtT9.setText("T5");
                     break;
                 case Calendar.THURSDAY:
-                    txtT3.setText("T6");txtT4.setText("T7");txtT5.setText("CN");txtT6.setText("T2");
+                    txtT3.setText("T6");txtT4.setText("T7");txtT5.setText("CN");txtT6.setText("T2");txtT7.setText("T3");txtCN.setText("T4");txtT8.setText("T5");txtT9.setText("T6");
                     break;
                 case Calendar.FRIDAY:
-                    txtT3.setText("T7");txtT4.setText("CN");txtT5.setText("T2");txtT6.setText("T3");
+                    txtT3.setText("T7");txtT4.setText("CN");txtT5.setText("T2");txtT6.setText("T3");txtT7.setText("T4");txtCN.setText("T5");txtT8.setText("T6");txtT9.setText("T7");
                     break;
                 case Calendar.SATURDAY:
-                    txtT3.setText("CN");txtT4.setText("T2");txtT5.setText("T3");txtT6.setText("T4");
+                    txtT3.setText("CN");txtT4.setText("T2");txtT5.setText("T3");txtT6.setText("T4");txtT7.setText("T5");txtCN.setText("T6");txtT8.setText("T7");txtT9.setText("CN");
                     break;
             }
 

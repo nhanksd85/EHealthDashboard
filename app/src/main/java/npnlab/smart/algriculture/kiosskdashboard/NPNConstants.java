@@ -57,18 +57,6 @@ public class NPNConstants {
         list.add(new NPNChannelModel("THƯ MỤC", R.drawable.open10d, R.drawable.open10d, "com.droidlogic.FileBrower", R.drawable.mega_folder,"#505050"));
 
 
-        //
-//        list.add(new NPNChannelModel("STV PLAY", R.drawable.open10d, R.drawable.open10d, "com.gviet.stv", R.drawable.stv, "#000096"));
-
-
-
-        //list.add(new NPNChannelModel("YOUTUBE", R.drawable.open10d, R.drawable.open10d, "com.google.android.youtube.tv", R.drawable.mega_youtube,"#e30613"));
-//        list.add(new NPNChannelModel("KARAOKE", R.drawable.open10d, R.drawable.open10d, "vn.ubc.ubctube", R.drawable.mega_ubctube_2, "#ffee00"));
-//
-//        list.add(new NPNChannelModel("VTV GO", R.drawable.open10d, R.drawable.open10d, "vn.vtv.vtvgotv", R.drawable.mega_vtvgo, "#ce1100"));
-//
-//        list.add(new NPNChannelModel("CỬA HÀNG", R.drawable.open10d, R.drawable.open10d, "vn.ubc.ubcstore", R.drawable.mega_ubcstore,"#009600"));
-
         return list;
 
     }
@@ -134,6 +122,7 @@ public class NPNConstants {
     };
 
     public static String[] city_names = {
+            "Vinh",
             "Hồ Chí Minh",
             "Hà Nội",
             "Vĩnh Long",

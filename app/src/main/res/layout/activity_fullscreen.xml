@@ -46,7 +46,7 @@
         android:orientation="horizontal">
         <ImageView
             android:focusable="false"
-            android:src="@drawable/newtest2"
+            android:src="@drawable/vinh_background"
             android:scaleType="fitXY"
             android:id="@+id/image_background"
             android:layout_width="match_parent"
@@ -55,13 +55,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity = "center"
             android:orientation="vertical">
 
             <LinearLayout
-
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="0.1"
+                android:layout_height="wrap_content"
+
                 android:background="@color/transparent"
                 android:orientation="horizontal"
                 android:layout_marginTop="5dp"
@@ -69,37 +69,35 @@
 
                 <ImageView
                     android:id="@+id/top_logo"
-                    android:layout_width="1dp"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.2"                        android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="-10dp"
-                    android:src="@drawable/android_tv_white"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/logo_acv"
                     android:scaleType="fitCenter"/>
 
                 <LinearLayout
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.6">
+                    android:layout_weight="0.1">
+
 
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="right"
                     android:layout_marginRight="10dp">
-
 
                     <DigitalClock
                         android:id="@+id/digitalClock1"
                         android:layout_width="wrap_content"
                         android:layout_height="45dp"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="20dp"
                         android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="35dp" />
-
+                        android:textSize="35dp"
+                        android:textStyle="bold" />
                     <ImageButton
                         android:id="@+id/btnn_allapp"
                         android:layout_width="45dp"
@@ -140,35 +138,32 @@
             </LinearLayout>
 
             <LinearLayout
-
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_weight="0.8"
+                android:layout_weight="8">
+                <WebView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id = "@+id/webContent" >
+                </WebView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.7">
 
-                </LinearLayout>
-                <LinearLayout
-                    android:visibility="gone"
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3">
-                    <WebView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id = "@+id/webContent" >
 
-                    </WebView>
-                </LinearLayout>
+
                 <!--layout for widget-->
                 <LinearLayout
+                    android:layout_marginTop = "0dp"
                     android:visibility="visible"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
 
                     android:orientation="vertical"
@@ -182,7 +177,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="25dp"
-                        android:text="Hồ Chí Minh - 06 tháng 12"
+                        android:text="Thành Phố Vinh - 06 tháng 12"
                         android:gravity = "start"/>
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -242,12 +237,12 @@
                     <LinearLayout
                         android:visibility="visible"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <LinearLayout
+                            android:background="#55555555"
                             android:layout_width="1dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_horizontal"
                             android:orientation="vertical">
@@ -282,8 +277,9 @@
                                 android:fontFamily="sans-serif-condensed-light" />
                         </LinearLayout>
                         <LinearLayout
+                            android:background="#77555555"
                             android:layout_width="1dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_horizontal"
                             android:orientation="vertical">
@@ -319,9 +315,11 @@
 
                         </LinearLayout>
                         <LinearLayout
+                            android:background="#55555555"
                             android:layout_width="1dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
+
                             android:gravity="center_horizontal"
                             android:orientation="vertical">
                             <TextView
@@ -356,8 +354,9 @@
 
                         </LinearLayout>
                         <LinearLayout
+                            android:background="#77555555"
                             android:layout_width="1dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_horizontal"
                             android:orientation="vertical">
@@ -392,10 +391,158 @@
                                 android:fontFamily="sans-serif-condensed-light" />
 
                         </LinearLayout>
+                        <LinearLayout
+                            android:background="#55555555"
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/T7"
+                                android:text="T7"
+                                android:textColor="#fff"
+                                android:textSize="20dp"
+                                android:fontFamily="sans-serif-condensed-light" />
+                            <ImageView
+                                android:id = "@+id/imgT7"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/weather_01"/>
+                            <TextView
+                                android:id = "@+id/txtT7Max"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="31°"
+                                android:textColor="#fff"
+                                android:textSize="20dp"
+                                android:fontFamily="sans-serif-condensed-light" />
+                            <TextView
+                                android:id = "@+id/txtT7Min"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="26°"
+                                android:textColor="#fff"
+                                android:textSize="20dp"
+                                android:fontFamily="sans-serif-condensed-light" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:background="#77555555"
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/CN"
+                                android:text="CN"
+                                android:textColor="#fff"
+                                android:textSize="20dp"
+                                android:fontFamily="sans-serif-condensed-light" />
+                            <ImageView
+                                android:id = "@+id/imgCN"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/weather_07"/>
+                            <TextView
+                                android:id = "@+id/txtCNMax"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="31°"
+                                android:textColor="#fff"
+                                android:textSize="20dp"
+                                android:fontFamily="sans-serif-condensed-light" />
+                            <TextView
+                                android:id = "@+id/txtCNMin"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="26°"
+                                android:textColor="#fff"
+                                android:textSize="20dp"
+                                android:fontFamily="sans-serif-condensed-light" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:background="#77555555"
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/T8"
+                                android:text="T2"
+                                android:textColor="#fff"
+                                android:textSize="20dp"
+                                android:fontFamily="sans-serif-condensed-light" />
+                            <ImageView
+                                android:id = "@+id/imgT8"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/weather_07"/>
+                            <TextView
+                                android:id = "@+id/txtT8Max"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="31°"
+                                android:textColor="#fff"
+                                android:textSize="20dp"
+                                android:fontFamily="sans-serif-condensed-light" />
+                            <TextView
+                                android:id = "@+id/txtT8Min"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="26°"
+                                android:textColor="#fff"
+                                android:textSize="20dp"
+                                android:fontFamily="sans-serif-condensed-light" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:background="#77555555"
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/T9"
+                                android:text="T3"
+                                android:textColor="#fff"
+                                android:textSize="20dp"
+                                android:fontFamily="sans-serif-condensed-light" />
+                            <ImageView
+                                android:id = "@+id/imgT9"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/weather_07"/>
+                            <TextView
+                                android:id = "@+id/txtT9Max"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="31°"
+                                android:textColor="#fff"
+                                android:textSize="20dp"
+                                android:fontFamily="sans-serif-condensed-light" />
+                            <TextView
+                                android:id = "@+id/txtT9Min"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="26°"
+                                android:textColor="#fff"
+                                android:textSize="20dp"
+                                android:fontFamily="sans-serif-condensed-light" />
+
+                        </LinearLayout>
                     </LinearLayout>
-
-
-
 
                 </LinearLayout>
 
@@ -403,11 +550,29 @@
 
             </LinearLayout>
 
+
+            <ImageButton
+                android:id = "@+id/btnn_voice"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background = "@drawable/icon_voice_red">
+            </ImageButton>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "Trợ Lý Ảo">
+
+            </TextView>
+
             <LinearLayout
+                android:visibility = "gone"
                 android:focusable="false"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="1dp"
+                android:layout_weight= "2"
                 android:orientation="vertical"
+                android:gravity = "bottom"
                 android:background="@color/transparent">
 
                 <HorizontalScrollView
@@ -432,15 +597,6 @@
                 </HorizontalScrollView>
 
 
-                <LinearLayout
-                    android:visibility="gone"
-                    android:id="@+id/horizontal_list2"
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="0dp"
-                    android:layout_gravity="bottom">
-                </LinearLayout>
 
 
             </LinearLayout>
