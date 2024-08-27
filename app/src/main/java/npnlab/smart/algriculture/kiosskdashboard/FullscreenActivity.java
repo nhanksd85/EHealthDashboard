@@ -40,21 +40,34 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import npnlab.smart.algriculture.kiosskdashboard.MVVM.VM.NPNHomeViewModel;
 import npnlab.smart.algriculture.kiosskdashboard.MVVM.View.NPNHomeView;
 import npnlab.smart.algriculture.kiosskdashboard.databinding.ActivityFullscreenBinding;
@@ -193,8 +206,50 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         }else if(msg.contains("thời tiết hôm nay")){
             String output = txtDescription.getText().toString();
             talkToMe("hôm nay thời tiết ở Vinh" + output);
+        }else if(msg.contains("robot") && msg.contains("đi thẳng")){
+            talkToMe("OK tôi sẽ đi thẳng");
+            sendDataMQTT("abcd0386433465/feeds/V20", "1");
+        }else if(msg.contains("robot") && (msg.contains("đi lui") || msg.contains("đi lùi"))){
+            talkToMe("OK OK");
+            sendDataMQTT("abcd0386433465/feeds/V20", "2");
+        }else if(msg.contains("robot") && msg.contains("rẽ trái")){
+            talkToMe("OK bên trái");
+            sendDataMQTT("abcd0386433465/feeds/V20", "3");
+        }else if(msg.contains("robot") && msg.contains("rẽ phải")){
+            talkToMe("OK tôi sẽ rẽ phải");
+            sendDataMQTT("abcd0386433465/feeds/V20", "4");
+        }
+        else{
+            getChatGPTAnswer(msg);
         }
     }
+
+    OkHttpClient client = new OkHttpClient();
+    private void getChatGPTAnswer(String question){
+
+        final Request request = new Request.Builder()
+                .url("http://gpt.lpnserver.net/test2?c=" + question)
+                .build();
+        try {
+            //Response response = client.newCall(request).execute();
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Request request, IOException e) {
+
+                }
+
+                @Override
+                public void onResponse(Response response) throws IOException {
+                    String msg = response.body().string();
+                    Log.d("ChatGPT", msg);
+                    //txtChatGPT.setText(msg);
+                    talkToMe(msg);
+                }
+            });
+        }catch (Exception e){}
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //do they have the data
@@ -221,6 +276,44 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
 
 
 
+
+    private static final String ALLOWED_CHARACTERS ="0123456789qwertyuiopasdfghjklzxcvbnm";
+
+    private static String getRandomString(final int sizeOfRandomString)
+    {
+        final Random random=new Random();
+        final StringBuilder sb=new StringBuilder(sizeOfRandomString);
+        sb.append('I');
+        sb.append('Y');
+        for(int i=0;i<sizeOfRandomString;++i)
+            sb.append(ALLOWED_CHARACTERS.charAt(random.nextInt(ALLOWED_CHARACTERS.length())));
+        return sb.toString();
+    }
+    MqttHelper mqttHelper;
+    public void startMQTT(String username){
+        mqttHelper = new MqttHelper(this, username, getRandomString(50));
+        mqttHelper.setCallback(new MqttCallbackExtended() {
+            @Override
+            public void connectComplete(boolean reconnect, String serverURI) {
+
+            }
+
+            @Override
+            public void connectionLost(Throwable cause) {
+
+            }
+
+            @Override
+            public void messageArrived(String topic, MqttMessage message) throws Exception {
+                Log.d("SmartAlgri", topic + "  : " + message.toString());
+
+            }
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken token) {
+
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -332,6 +425,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
             }
         });
 
+        startMQTT("abcd0386433465");
     }
 
 
@@ -791,6 +885,22 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
                 imgWifiStatus.setImageDrawable(getResources().getDrawable(R.drawable.icon_disconnect));
                 network_state = NETWORK_STATE.NO_CONNECT;
             }
+        }
+    }
+
+
+    public void sendDataMQTT(String topic, String value){
+        MqttMessage msg = new MqttMessage();
+        msg.setId(1234);
+        msg.setQos(0);
+        msg.setRetained(false);
+
+        byte[] b = value.getBytes(Charset.forName("UTF-8"));
+        msg.setPayload(b);
+
+        try {
+            mqttHelper.mqttAndroidClient.publish(topic, msg);
+        }catch (MqttException e){
         }
     }
 

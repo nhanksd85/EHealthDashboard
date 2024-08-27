@@ -143,8 +143,7 @@ public class NPNGlobalMethods {
         NPNGlobalMethods.writeToInternalFile("user_setting.txt", userSettingData);
     }
 
-    public static void writeToInternalFile(String fileName, String data)
-    {
+    public static void writeToInternalFile(String fileName, String data) {
         try {
 
             File root = new File(NPNConstants.rootStorageDir);
