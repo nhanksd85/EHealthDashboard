@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "npn.npnlauncher.dcar.family",
+  "applicationId": "npn.npnlauncher.dcar",
   "variantName": "release",
   "elements": [
     {

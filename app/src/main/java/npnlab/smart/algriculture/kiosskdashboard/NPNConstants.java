@@ -42,9 +42,11 @@ public class NPNConstants {
 
 
         //list.add(new NPNChannelModel("TIVI ONLINE", R.drawable.open10d, R.drawable.open10d, "com.webmientay.xemtv", R.drawable.mega_tvplus, "#000096"));
+        list.add(new NPNChannelModel("EXO TIVI", R.drawable.open10d, R.drawable.open10d, "com.phienban.chotv", R.drawable.fpt3_small, "#ff6400"));
+
         list.add(new NPNChannelModel("VTV GO", R.drawable.open10d, R.drawable.open10d, "vn.vtv.vtvgotv", R.drawable.mega_vtvgo, "#ce1100"));
         list.add(new NPNChannelModel("VTVCAB ON", R.drawable.open10d, R.drawable.open10d, "com.gviet.stv", R.drawable.logo_vtvcabon, "#2596be"));
-        list.add(new NPNChannelModel("FPT PLAY", R.drawable.open10d, R.drawable.open10d, "net.fptplay.ottbox", R.drawable.fpt3_small, "#ff6400"));
+        //list.add(new NPNChannelModel("FPT PLAY", R.drawable.open10d, R.drawable.open10d, "net.fptplay.ottbox", R.drawable.fpt3_small, "#ff6400"));
 
         //list.add(new NPNChannelModel("TỐI ƯU", R.drawable.open10d, R.drawable.open10d, "com.linkin.memory.clear", R.drawable.mega_booter,"#007eff"));
         list.add(new NPNChannelModel("TỐI ƯU", R.drawable.open10d, R.drawable.open10d, "com.yunos.tv.defensor", R.drawable.mega_booter,"#007eff"));
