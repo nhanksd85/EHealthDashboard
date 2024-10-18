@@ -7,6 +7,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -17,6 +18,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -169,17 +171,18 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         mContentView = binding.fullscreenContent;
 
         // Set up the user interaction to manually show or hide the system UI.
-        mContentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggle();
-            }
-        });
+//        mContentView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                toggle();
+//            }
+//        });
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        binding.dummyButton.setOnTouchListener(mDelayHideTouchListener);
+
+        //binding.dummyButton.setOnTouchListener(mDelayHideTouchListener);
 
         // Find the WebView by its unique ID
 //        WebView webView = findViewById(R.id.webContent);
@@ -226,7 +229,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         btnFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchAppFromPackageName("com.droidlogic.FileBrower");
+                //launchAppFromPackageName("com.droidlogic.FileBrower");
+                launchAppFromPackageName("com.android.rockchip");
             }
         });
 
@@ -234,6 +238,14 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         btnSetting.setOnClickListener(v -> {
             launchAppFromPackageName("com.android.tv.settings");
         });
+
+        AudioManager am =
+                (AudioManager) this.peekAvailableContext().getSystemService(Context.AUDIO_SERVICE);
+
+        am.setStreamVolume(
+                AudioManager.STREAM_MUSIC,
+                am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
+                0);
 
     }
 
@@ -382,8 +394,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
      * previously scheduled calls.
      */
     private void delayedHide(int delayMillis) {
-        mHideHandler.removeCallbacks(mHideRunnable);
-        mHideHandler.postDelayed(mHideRunnable, delayMillis);
+        //mHideHandler.removeCallbacks(mHideRunnable);
+        //mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
     LinearLayout horizontalView;
@@ -532,6 +544,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         if(packageName.contains("NPNAppManager") ||
                 packageName.contains("tv.settings") ||
                 packageName.contains("droidlogic.FileBrower") ||
+                packageName.contains("com.android.rockchip") ||
                 packageName.contains("vn.ubc.ubcstore")) {
 
             String serial = "abcdcadfewfewafew";
@@ -616,8 +629,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         return (int) ((Math.random() * (max - min)) + min);
     }
 
-    public String RemoveSign4VietnameseString(String str)
-    {
+    public String RemoveSign4VietnameseString(String str) {
         for (int i = 1; i < NPNConstants.VietnameseSigns.length; i++)
         {
             for (int j = 0; j < NPNConstants.VietnameseSigns[i].length(); j++)
@@ -849,7 +861,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     int counterBackPress = 0;
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_1) {
+        if (keyCode == KeyEvent.KEYCODE_MENU || keyCode == KeyEvent.KEYCODE_1) {
             counterBackPress++;
             if (counterBackPress > 5) {
                 counterBackPress = 0;

@@ -56,8 +56,9 @@ public class NPNConstants {
         list.add(new NPNChannelModel("CỬA HÀNG", R.drawable.open10d, R.drawable.open10d, "vn.ubc.ubcstore", R.drawable.mega_ubcstore,"#0000ff"));
         list.add(new NPNChannelModel("ỨNG DỤNG", R.drawable.open10d, R.drawable.open10d, "com.entertainment.npnlab.npntivi.NPNAppManager", R.drawable.mega_allapp,"#8263ca"));
         list.add(new NPNChannelModel("CÀI ĐẶT", R.drawable.open10d, R.drawable.open10d, "com.android.tv.settings", R.drawable.gear,"#9fa09f"));
-        list.add(new NPNChannelModel("THƯ MỤC", R.drawable.open10d, R.drawable.open10d, "com.droidlogic.FileBrower", R.drawable.mega_folder,"#505050"));
+        //list.add(new NPNChannelModel("THƯ MỤC", R.drawable.open10d, R.drawable.open10d, "com.droidlogic.FileBrower", R.drawable.mega_folder,"#505050"));
 
+        list.add(new NPNChannelModel("THƯ MỤC", R.drawable.open10d, R.drawable.open10d, "com.android.rockchip", R.drawable.mega_folder,"#505050"));
 
         //
 //        list.add(new NPNChannelModel("STV PLAY", R.drawable.open10d, R.drawable.open10d, "com.gviet.stv", R.drawable.stv, "#000096"));
@@ -89,7 +90,9 @@ public class NPNConstants {
         list.add(new NPNChannelModel("SHARE ANDROID", 0, 0, "com.toptech.mitv.wfd", R.drawable.mega_share_android,"#f2740b"));
         list.add(new NPNChannelModel("SHARE iOS", 0, 0, "com.waxrain.airplaydmr", R.drawable.airpinpro));
 
-        list.add(new NPNChannelModel("THƯ MỤC", R.drawable.open10d, R.drawable.open10d, "com.jrm.localmm", R.drawable.mega_folder,"#505050"));
+        //list.add(new NPNChannelModel("THƯ MỤC", R.drawable.open10d, R.drawable.open10d, "com.jrm.localmm", R.drawable.mega_folder,"#505050"));
+        list.add(new NPNChannelModel("THƯ MỤC", R.drawable.open10d, R.drawable.open10d, "com.android.rockchip", R.drawable.mega_folder,"#505050"));
+
         list.add(new NPNChannelModel("TỐI ƯU", R.drawable.open10d, R.drawable.open10d, "com.linkin.memory.clear", R.drawable.mega_booter,"#007eff"));
 
         list.add(new NPNChannelModel("YOUTUBE", R.drawable.open10d, R.drawable.open10d, "com.google.android.youtube.tv", R.drawable.mega_youtube,"#e30613"));

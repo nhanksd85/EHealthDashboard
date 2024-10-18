@@ -64,7 +64,7 @@
                 android:layout_weight="0.1"
                 android:background="@color/transparent"
                 android:orientation="horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:layout_gravity="left">
 
                 <ImageView
@@ -72,7 +72,7 @@
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"                        android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="-10dp"
+                    android:layout_marginLeft="5dp"
                     android:src="@drawable/android_tv_white"
                     android:scaleType="fitCenter"/>
 
