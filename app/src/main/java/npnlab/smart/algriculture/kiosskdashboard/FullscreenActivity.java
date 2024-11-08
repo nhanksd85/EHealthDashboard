@@ -402,16 +402,23 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     List<NPNChannelModel> listChannels;
     List<NPNInstalledAppModel> listInstalledApps;
 
+
+
+
+
     void setupHorizontalList() {
 
-        int angle = 80;
+        int angle = 90;
 
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
         //int itemH = (int)((float)displayMetrics.heightPixels * 0.3f);
         //int itemW = (int)((float)itemH * 0.7f);
 
-        int itemH = (int)((float)displayMetrics.heightPixels * 0.15f);
-        int itemW = (int)(itemH * 1.5);
+        //int itemH = (int)((float)displayMetrics.heightPixels * 0.15f);
+        //int itemW = (int)(itemH * 1.5);
+
+        int itemH = (int)((float)displayMetrics.heightPixels * 0.25f);
+        int itemW = (int)(itemH * 1.5);// (int)((float)itemH * 0.7f);
 
         float tanValue = (float)Math.tan(Math.toRadians(angle));
         int marginLeft = (int) ((float)itemH / tanValue);
@@ -428,13 +435,16 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
 
 
         LinearLayout.LayoutParams abc = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        abc.setMargins(2,0,0,20);
+        abc.setMargins(0,0,0,20);
         horizontalView.setLayoutParams(abc);
+
+
+
 
         initChannelItemsOffline(false);
         List<NPNChannelModel> list = listChannels;
 
-        //listInstalledApps.size()
+        /*
         for(int i=0; i<0; ++i) {
             NPNInstalledAppModel appModel = listInstalledApps.get(i);
             // Check if the installed app already be in the list or not
@@ -460,17 +470,18 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
                 list.add(model);
             }
         }
+        */
+
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(itemW, itemH);
-        //params.setMargins(-marginLeft,20,2,0);
-
-        params.setMargins(10,30,2,30);
+        params.setMargins(0,20,20,5);
 
 
         for (int i=0; i < list.size(); ++i) {
             NPNChannelModel model = list.get(i);
+
             final int idx = i;
-            int left = idx == 0 ? 10  : 10;
+            int left = idx == 0 ? 0  : -marginLeft;
 
 
             int bkgColor;
@@ -493,12 +504,11 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
             valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator()); // increase the speed first and then decrease
             valueAnimator.setDuration(200);
             valueAnimator.addUpdateListener(animation -> {
+
                 int progress = Math.round((float)animation.getAnimatedValue());
-
-
-                //Animation HEIGHT + 20
-                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(itemW + progress, itemH + 10);
-                params2.setMargins(left  + (int)(20.0f / tanValue) * 2,10,2,10);
+                progress = (int)(itemW * 0.2);
+                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(itemW + 30 , itemH);
+                params2.setMargins(left + (int)(20.0f / tanValue) * 2,0,20,5);
                 horizontalView.getChildAt(idx).setLayoutParams(params2);
 
             });
@@ -512,15 +522,14 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
 
             ParaItem item = new ParaItem(this, bkgColor, angle, logo, model.mName, (v, b) -> {
                 if(b) {
-                    valueAnimator.start();
-                    //This part can be removed
-//                    LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams((int)(itemW * 1.5), itemH +  40);
-//                    params2.setMargins(left + (int)(20.0f / tanValue) * 2 ,10,2,10);
-//                    horizontalView.getChildAt(idx).setLayoutParams(params2);
+                    //valueAnimator.start();
+                    LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams((int)(itemW * 1.35), itemH);
+                    params2.setMargins(left + (int)(20.0f / tanValue) * 2 ,0,20,5);
+                    horizontalView.getChildAt(idx).setLayoutParams(params2);
                 } else {
-                    valueAnimator.cancel();
+                    //valueAnimator.cancel();
                     LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(itemW, itemH);
-                    params2.setMargins(left ,30,2,0);
+                    params2.setMargins(left ,20,20,5);
                     horizontalView.getChildAt(idx).setLayoutParams(params2);
                 }
             });
@@ -880,7 +889,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
             NPNGlobalMethods.writeToInternalFile("logo.txt", "1");
             imgTopLogo.setImageDrawable(getResources().getDrawable(R.drawable.android_tv_crop));
         }
-        displayUpdateDialog();
+        //displayUpdateDialog();
     }
 
     public void displayUpdateDialog(){

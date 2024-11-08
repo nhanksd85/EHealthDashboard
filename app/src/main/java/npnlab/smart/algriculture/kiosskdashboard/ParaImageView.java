@@ -72,13 +72,14 @@ public class ParaImageView extends AppCompatImageView {
         //int itemW = (int)((float)itemH * 1.3f);
         int currentHeight = getHeight();
 
-        if(currentHeight > itemH + 10) {
-            // border
-            //paint.setStyle(Paint.Style.STROKE);
-            //paint.setColor(Color.parseColor("#00ffff"));
-            //paint.setStrokeWidth(15);
-            //canvas.drawPath(path, paint);
+        if(getWidth() > getHeight() * 1.5){
+
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(Color.parseColor("#ffffff"));
+            paint.setStrokeWidth(10);
+            canvas.drawPath(path, paint);
         }
+
 
 
         //Log.d("TESTUBC", "Item height: " + itemH + " and cover height: " + currentHeight);
