@@ -57,6 +57,7 @@ import androidx.core.content.ContextCompat;
 import npnlab.smart.algriculture.kiosskdashboard.MVVM.VM.NPNHomeViewModel;
 import npnlab.smart.algriculture.kiosskdashboard.MVVM.View.NPNHomeView;
 import npnlab.smart.algriculture.kiosskdashboard.databinding.ActivityFullscreenBinding;
+import com.tomerrosenfeld.customanalogclockview.CustomAnalogClock;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -150,6 +151,10 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     ImageView imgMainIcon;
     ImageView imgTopLogo;
     ImageButton btnAllApp, btnFolder, btnSetting;
+    CustomAnalogClock analogClock;
+
+    TextView textDay, textDate, textMonthYear, textCity, textTemperature, textHumidity;
+    ImageView imgWeatherIcon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,6 +169,21 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         txtCurrentDate = findViewById(R.id.txtCurrentDate);
 
         imgWifiStatus = findViewById(R.id.imgWifiStatus);
+
+        analogClock = findViewById(R.id.analog_clock);
+
+        analogClock.setAutoUpdate(true);
+        analogClock.setScale(0.5f);
+        analogClock.init(this,R.drawable.clockface, R.drawable.hour, R.drawable.minute,0,false,false);
+
+
+        textDay = findViewById(R.id.textDay);
+        textDate = findViewById(R.id.textDate);
+        textMonthYear = findViewById(R.id.textMonthYear);
+        textCity = findViewById(R.id.textCity);
+        textTemperature = findViewById(R.id.textTemperature);
+        textHumidity = findViewById(R.id.textHumidity);
+        imgWeatherIcon = findViewById(R.id.imgWeatherIcon);
 
 
         mVisible = true;
@@ -757,10 +777,16 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
             txtTemperature.setText(splitTemp[0]);
             txtHumidity.setText(currentMain.getString("humidity") +"%");
 
+            textTemperature.setText("Nhiệt Độ: " + splitTemp[0] + "°C");
+            textHumidity.setText("Độ Ẩm   : " + currentMain.getString("humidity") +"%");
+            textCity.setText(currentCity);
+
+
 
             int id = getResources().getIdentifier(icon, "drawable", peekAvailableContext().getPackageName());
             Drawable drawable = getResources().getDrawable(id);
             imgMainIcon.setImageDrawable(drawable);
+            imgWeatherIcon.setImageDrawable(drawable);
 
             String urlHistory = "https://api.openweathermap.org/data/2.5/forecast/daily?q=xxxxxx&appid=6721dd6cc81ac8c2460a5c1260aa064a&lang=vi&units=metric&cnt=4";
             urlHistory = urlHistory.replaceAll("xxxxxx", RemoveSign4VietnameseString(currentCity.toLowerCase()));
@@ -775,6 +801,17 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         Log.d("ACLAB","Request Weather: " + message);
         Calendar c = Calendar.getInstance();
         int day = c.get(Calendar.DAY_OF_WEEK);
+//        textMonthYear.setText("Tháng " + (c.get(Calendar.MONTH) +1) + " - " + c.get(Calendar.YEAR));
+//        textDate.setText(c.get(Calendar.DATE) + "");
+
+        SimpleDateFormat date = new SimpleDateFormat("dd");
+        textDate.setText(date.format(c.getTime()));
+
+
+        SimpleDateFormat month_year = new SimpleDateFormat("MM - yyyy");
+        textMonthYear.setText("Tháng " + month_year.format(c.getTime()));
+
+
         try{
             JSONObject mainObject = new JSONObject(message);
             JSONArray arrJson = mainObject.getJSONArray("list");
@@ -817,6 +854,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
                 txtTempMin.setText( splitNight[0] + "°");
                 txtTempMax.setText( splitDay[0] + "°");
 
+
+
                 imgForecast.setImageDrawable(drawable);
 
             }
@@ -824,26 +863,34 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
             switch (day) {
                 case Calendar.SUNDAY:
                     txtT3.setText("T2");txtT4.setText("T3");txtT5.setText("T4");txtT6.setText("T5");
+                    textDay.setText(" Chủ Nhật");
                     break;
                 case Calendar.MONDAY:
                     txtT3.setText("T3");txtT4.setText("T4");txtT5.setText("T5");txtT6.setText("T6");
+                    textDay.setText("   Thứ 2");
                     break;
                 case Calendar.TUESDAY:
                     txtT3.setText("T4");txtT4.setText("T5");txtT5.setText("T6");txtT6.setText("T7");
+                    textDay.setText("   Thứ 3");
                     break;
                 case Calendar.WEDNESDAY:
                     txtT3.setText("T5");txtT4.setText("T6");txtT5.setText("T7");txtT6.setText("CN");
+                    textDay.setText("   Thứ 4");
                     break;
                 case Calendar.THURSDAY:
                     txtT3.setText("T6");txtT4.setText("T7");txtT5.setText("CN");txtT6.setText("T2");
+                    textDay.setText("   Thứ 5");
                     break;
                 case Calendar.FRIDAY:
                     txtT3.setText("T7");txtT4.setText("CN");txtT5.setText("T2");txtT6.setText("T3");
+                    textDay.setText("   Thứ 6");
                     break;
                 case Calendar.SATURDAY:
                     txtT3.setText("CN");txtT4.setText("T2");txtT5.setText("T3");txtT6.setText("T4");
+                    textDay.setText("   Thứ 7");
                     break;
             }
+
 
         }catch (Exception e){
             Log.d("ACLAB", "There is an error");

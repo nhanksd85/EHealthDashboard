@@ -35,6 +35,8 @@ public class NPNConstants {
         list.add(new NPNChannelModel("PHIM HAY", 0, 0, "vn.ubc.phimmoi", R.drawable.mega_movie_2, "#870069"));
 
         list.add(new NPNChannelModel("YOUTUBE", R.drawable.open10d, R.drawable.open10d, "com.google.android.youtube.tv", R.drawable.mega_youtube,"#e30613"));
+        //list.add(new NPNChannelModel("YOUTUBE", R.drawable.open10d, R.drawable.open10d, "com.firsthash.smartyoutubetv2.beta", R.drawable.mega_youtube,"#e30613"));
+
         //list.add(new NPNChannelModel("VN TUBE", R.drawable.open10d, R.drawable.open10d, "com.liskovsoft.smarttubetv.beta", R.drawable.vntube_newlog, "#eedd04"));
         //list.add(new NPNChannelModel("SMART TUBE", R.drawable.open10d, R.drawable.open10d, "com.firsthash.smartyoutubetv2.beta", R.drawable.smart_tube, "#ffffff"));
 
