@@ -43,6 +43,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -145,6 +147,48 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
             return false;
         }
     };
+
+    /**
+     * 获取 SN 号
+     * @return
+     */
+    public static String getSN() {
+        @SuppressLint({"NewApi", "LocalSuppress", "MissingPermission"}) String serial = Build.getSerial();
+        if (serial.length() < 16) {
+            return null;
+        }
+        if (serial.indexOf("NOT") != -1) {
+            return null;
+        }
+        return serial;
+    }
+
+
+    public static String getEthMac() {
+        // TODO Auto-generated method stub
+        String mac_eth = "";
+        String submac_eth = "";
+        try {
+            String[] args = { "/system/bin/cat", "/sys/class/net/eth0/address" };
+            ProcessBuilder cmd = new ProcessBuilder(args);
+            Process process = cmd.start();
+            InputStream macInputStream = process.getInputStream();
+            byte[] arrayOfByte = new byte[1024];
+            while (macInputStream.read(arrayOfByte) != -1) {
+                mac_eth = mac_eth + new String(arrayOfByte);
+                submac_eth = mac_eth.substring(0, 17);
+                submac_eth = submac_eth.replace(":", "");
+            }
+            macInputStream.close();
+        } catch (IOException localIOException) {
+            localIOException.printStackTrace();
+        }
+        //return "22584a00f3f5";
+        return submac_eth;
+    }
+
+
+
     private ActivityFullscreenBinding binding;
     TextView txtTemperature, txtHumidity, txtDescription;
     ImageView imgMainIcon;
