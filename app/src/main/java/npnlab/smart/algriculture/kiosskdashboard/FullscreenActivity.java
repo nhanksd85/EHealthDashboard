@@ -273,8 +273,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         btnFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //launchAppFromPackageName("com.droidlogic.FileBrower");
-                launchAppFromPackageName("com.android.rockchip");
+                launchAppFromPackageName("com.droidlogic.FileBrower");
+                //launchAppFromPackageName("com.android.rockchip");
             }
         });
 

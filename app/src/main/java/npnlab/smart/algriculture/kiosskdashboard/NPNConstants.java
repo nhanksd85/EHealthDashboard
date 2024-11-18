@@ -58,7 +58,7 @@ public class NPNConstants {
         list.add(new NPNChannelModel("CÀI ĐẶT", R.drawable.open10d, R.drawable.open10d, "com.android.tv.settings", R.drawable.gear,"#9fa09f"));
         //list.add(new NPNChannelModel("THƯ MỤC", R.drawable.open10d, R.drawable.open10d, "com.droidlogic.FileBrower", R.drawable.mega_folder,"#505050"));
 
-        list.add(new NPNChannelModel("THƯ MỤC", R.drawable.open10d, R.drawable.open10d, "com.android.rockchip", R.drawable.mega_folder,"#505050"));
+        list.add(new NPNChannelModel("THƯ MỤC", R.drawable.open10d, R.drawable.open10d, "com.droidlogic.FileBrower", R.drawable.mega_folder,"#505050"));
 
         //
 //        list.add(new NPNChannelModel("STV PLAY", R.drawable.open10d, R.drawable.open10d, "com.gviet.stv", R.drawable.stv, "#000096"));
