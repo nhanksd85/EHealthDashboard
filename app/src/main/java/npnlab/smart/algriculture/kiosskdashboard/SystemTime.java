@@ -9,7 +9,7 @@ import java.time.Clock;
 import java.util.Calendar;
 import java.util.Map;
 
-import okhttp3.OkHttp;
+
 import retrofit2.Retrofit;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,4 +61,27 @@ public class SystemTime {
             }
         });
     }
+
+    private void SetTime(String time){
+        Calendar calendar = Calendar.getInstance();
+        String date = time.split(" ")[0];
+        String hms = time.split(" ")[1];
+        calendar.set(Calendar.YEAR,Integer.parseInt(date.split("-")[0]));
+        calendar.set(Calendar.MONTH,Integer.parseInt(date.split("-")[1]));
+        calendar.set(Calendar.DATE,Integer.parseInt(date.split("-")[2]));
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hms.split(":")[0]));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(hms.split(":")[1]));
+        calendar.set(Calendar.SECOND, Integer.parseInt(hms.split(":")[2]));
+
+        long selectedTime = calendar.getTimeInMillis();
+        AlarmManager alarmManager = (AlarmManager) launcher.getSystemService(Context.ALARM_SERVICE);
+        // 设置RTC_WAKEUP触发器，将系统时间设置为指定时间
+        alarmManager.setTime(selectedTime);
+
+        // 发送广播通知系统时间已经更改
+        Intent intent = new Intent(Intent.ACTION_TIME_CHANGED);
+        intent.setFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+        launcher.sendBroadcast(intent);
+    }
+
 }
