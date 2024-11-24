@@ -236,7 +236,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
 
         btnSetting = findViewById(R.id.btnn_setting);
         btnSetting.setOnClickListener(v -> {
-            launchAppFromPackageName("com.android.tv.settings");
+            launchAppFromPackageName("com.android.settings");
         });
 
         AudioManager am =
@@ -349,6 +349,11 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         delayedHide(100);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        delayedHide(100);
+    }
 
     private void toggle() {
 //        if (mVisible) {
@@ -394,8 +399,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
      * previously scheduled calls.
      */
     private void delayedHide(int delayMillis) {
-        //mHideHandler.removeCallbacks(mHideRunnable);
-        //mHideHandler.postDelayed(mHideRunnable, delayMillis);
+        mHideHandler.removeCallbacks(mHideRunnable);
+        mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
     LinearLayout horizontalView;
@@ -542,6 +547,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         //Launch an application from package name
         activeAdminPackage = packageName;
         if(packageName.contains("NPNAppManager") ||
+                packageName.contains("com.android.settings")||
                 packageName.contains("tv.settings") ||
                 packageName.contains("droidlogic.FileBrower") ||
                 packageName.contains("com.android.rockchip") ||

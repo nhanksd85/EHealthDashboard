@@ -42,10 +42,10 @@ public class NPNConstants {
 
 
         //list.add(new NPNChannelModel("TIVI ONLINE", R.drawable.open10d, R.drawable.open10d, "com.webmientay.xemtv", R.drawable.mega_tvplus, "#000096"));
-        list.add(new NPNChannelModel("EXO TIVI", R.drawable.open10d, R.drawable.open10d, "com.phienban.chotv", R.drawable.fpt3_small, "#ff6400"));
+        //list.add(new NPNChannelModel("EXO TIVI", R.drawable.open10d, R.drawable.open10d, "com.phienban.chotv", R.drawable.fpt3_small, "#ff6400"));
 
         list.add(new NPNChannelModel("VTV GO", R.drawable.open10d, R.drawable.open10d, "vn.vtv.vtvgotv", R.drawable.mega_vtvgo, "#ce1100"));
-        list.add(new NPNChannelModel("VTVCAB ON", R.drawable.open10d, R.drawable.open10d, "com.gviet.stv", R.drawable.logo_vtvcabon, "#2596be"));
+        list.add(new NPNChannelModel("VTVCAB ON", R.drawable.open10d, R.drawable.open10d, "com.gviet.stv", R.drawable.logo_vtvcabon, "#0000ff"));
         //list.add(new NPNChannelModel("FPT PLAY", R.drawable.open10d, R.drawable.open10d, "net.fptplay.ottbox", R.drawable.fpt3_small, "#ff6400"));
 
         //list.add(new NPNChannelModel("TỐI ƯU", R.drawable.open10d, R.drawable.open10d, "com.linkin.memory.clear", R.drawable.mega_booter,"#007eff"));
@@ -53,9 +53,9 @@ public class NPNConstants {
 
 
 
-        list.add(new NPNChannelModel("CỬA HÀNG", R.drawable.open10d, R.drawable.open10d, "vn.ubc.ubcstore", R.drawable.mega_ubcstore,"#0000ff"));
+        //list.add(new NPNChannelModel("CỬA HÀNG", R.drawable.open10d, R.drawable.open10d, "vn.ubc.ubcstore", R.drawable.mega_ubcstore,"#0000ff"));
         list.add(new NPNChannelModel("ỨNG DỤNG", R.drawable.open10d, R.drawable.open10d, "com.entertainment.npnlab.npntivi.NPNAppManager", R.drawable.mega_allapp,"#8263ca"));
-        list.add(new NPNChannelModel("CÀI ĐẶT", R.drawable.open10d, R.drawable.open10d, "com.android.tv.settings", R.drawable.gear,"#9fa09f"));
+        list.add(new NPNChannelModel("CÀI ĐẶT", R.drawable.open10d, R.drawable.open10d, "com.android.settings", R.drawable.gear,"#9fa09f"));
         //list.add(new NPNChannelModel("THƯ MỤC", R.drawable.open10d, R.drawable.open10d, "com.droidlogic.FileBrower", R.drawable.mega_folder,"#505050"));
 
         list.add(new NPNChannelModel("THƯ MỤC", R.drawable.open10d, R.drawable.open10d, "com.android.rockchip", R.drawable.mega_folder,"#505050"));
