@@ -3,6 +3,7 @@ package npnlab.smart.algriculture.kiosskdashboard;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
@@ -218,6 +219,31 @@ public class NPNGlobalMethods {
         }
         return id;
     }
+
+
+    public static void saveKey(Activity activity, String key, String value) {
+        if (key.isEmpty()) return;
+        SharedPreferences settings = activity.getSharedPreferences(NPNConstants.SETTING_REFKEY_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    public static String loadKey(Activity activity, String key) {
+        SharedPreferences settings = activity.getSharedPreferences(NPNConstants.SETTING_REFKEY_NAME, Context.MODE_PRIVATE);
+
+        if(key.equals(NPNConstants.SETTING_ROOT_PATH))
+            //return settings.getString(key, "/mnt/usb");
+            return settings.getString(key, "/storage");
+        else if(key.equals(NPNConstants.SETTING_LAUNCHE_PACKAGE))
+            return settings.getString(key, "false");
+        else if(key.equals(NPNConstants.SETTING_YOUTUBE_PACKAGE))
+            return settings.getString(key, "vn.ubc.ubctube");
+        else
+            return settings.getString(key, "");
+
+    }
+
 
 
 

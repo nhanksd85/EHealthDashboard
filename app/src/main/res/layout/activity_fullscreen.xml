@@ -42,6 +42,27 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
 
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/fullscreen_ad"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <VideoView
+            android:id="@+id/videoViewAdvertisement"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+        <ImageView
+            android:id="@+id/imgAdvertisement"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"/>
+    </RelativeLayout>
+    
+
     <FrameLayout
         android:id="@+id/fullscreen_content"
         android:layout_width="match_parent"

@@ -6,7 +6,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "npn.npnlauncher.dcar"
+        applicationId "npn.npnlauncher.dcar.test"
         minSdk 19
         targetSdk 19
         versionCode 4000

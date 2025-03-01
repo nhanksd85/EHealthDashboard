@@ -16,9 +16,12 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -34,10 +37,13 @@ import android.view.WindowInsets;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -194,6 +200,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     ImageView imgMainIcon;
     ImageView imgTopLogo;
     ImageButton btnAllApp, btnFolder, btnSetting;
+    FrameLayout frameContent;
+    RelativeLayout frameAdvertisement;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -291,7 +299,79 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
                 am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
                 0);
 
+
+        getUSB();
+        mVideoView = findViewById(R.id.videoViewAdvertisement);
+        imgAdvertisement = findViewById(R.id.imgAdvertisement);
+        frameContent = findViewById(R.id.fullscreen_content);
+        frameAdvertisement = findViewById(R.id.fullscreen_ad);
+
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                //TODO: move to next video
+                if(name_img_path_list.size() > 0){
+                    //isActivatedImageAnimation = true;
+                    currentImageFileIndex = 0;
+
+                    //setupImageAnimationTimer();
+
+                }else {
+                    if (name_path_list.size() > 0) {
+                        currentAdFileIndex++;
+                        if (currentAdFileIndex >= name_path_list.size()) currentAdFileIndex = 0;
+                        playVideoFromUSB(name_path_list.get(currentAdFileIndex));
+
+                    }
+                }
+            }
+        });
+
     }
+
+
+    public String getUSB(){
+        File storageDirectory = new File("/mnt/storage");
+        if(!storageDirectory.exists()) {
+            Log.e("ABC", "getUSB: '/storage' does not exist on this device");
+            //return "";
+            storageDirectory = new File("/storage");
+            if (!storageDirectory.exists()) {
+                return "";
+            }
+        }
+        File[] files = storageDirectory.listFiles();
+        if(files == null) {
+            Log.e("ABC", "getUSB: Null when requesting directories inside '/storage'");
+            return "";
+        }
+
+        List<String> possibleUSBStorageMounts = new ArrayList<>();
+        for (File file : files) {
+            String path = file.getPath();
+            if (path.contains("emulated") ||
+                    path.contains("sdcard") ||
+                    path.contains("self")) {
+                Log.d("ABC", "getUSB: Found '" + path + "' - not USB");
+            } else {
+                possibleUSBStorageMounts.add(path);
+            }
+        }
+
+        if (possibleUSBStorageMounts.size() == 0) {
+            Log.e("ABC", "getUSB: Did not find any possible USB mounts");
+            return "";
+        }
+        if(possibleUSBStorageMounts.size() > 0) {
+            Log.d("ABC", "getUSB: Found multiple possible USB mount points: " + possibleUSBStorageMounts.size());
+            Log.d("ABC", "USB:" + possibleUSBStorageMounts.get(0));
+            //checking_main_files(new File(possibleUSBStorageMounts.get(0)));
+            NPNGlobalMethods.saveKey(this, NPNConstants.SETTING_ROOT_PATH, possibleUSBStorageMounts.get(0));
+        }
+
+        return possibleUSBStorageMounts.get(0);
+    }
+
 
 
     public void stateChange(String action, String data) {
@@ -315,7 +395,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
 
             // This is called after every 10 sec interval.
             public void onTick(long millisUntilFinished) {
-                Log.d("ACLAB","Using count down timer");
+                //Log.d("ACLAB","Using count down timer");
                 if(timerFlag[0] == 1) {
                     checkNetworkConnection();
                     setTimer(0, 30);
@@ -908,6 +988,206 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         }
     }
 
+
+    public String findAdvertisementFolder(File dir){
+        File[] listFile = dir.listFiles();
+        if (listFile != null) {
+            for (int i = 0; i < listFile.length; i++) {
+                if (listFile[i].isDirectory()) {
+                    if (listFile[i].getAbsolutePath().toLowerCase().indexOf(match_folder) >= 0) {
+                        return listFile[i].getAbsolutePath();
+                    }
+                }
+            }
+            for (int i = 0; i < listFile.length; i++) {
+                if (listFile[i].isDirectory()) {
+                    return  findAdvertisementFolder(listFile[i]);
+                }
+            }
+            return "";
+        }else{
+            return "";
+        }
+    }
+    String match_folder = "";
+    ArrayList<String> name_list = new ArrayList<>();
+    ArrayList<String> name_path_list = new ArrayList<>();
+
+    ArrayList<String> name_img_list = new ArrayList<>();
+    ArrayList<String> name_img_path_list = new ArrayList<>();
+    private int currentAdFileIndex = -1;
+    private int currentImageFileIndex = 0;
+    VideoView mVideoView;
+    ImageView imgAdvertisement;
+
+    private void load_img_files(File dir){
+        name_img_list.clear();
+        name_img_path_list.clear();
+
+        File[] listFile = dir.listFiles();
+
+
+        if (listFile != null) {
+            for (int i = 0; i < listFile.length; i++) {
+
+                if (listFile[i].isDirectory()) {
+                    load_img_files(listFile[i]);
+                } else {
+                    if (listFile[i].getName().endsWith("jpg") || listFile[i].getName().endsWith("bmp")
+                            || listFile[i].getName().endsWith("png")) {
+                        name_img_list.add(listFile[i].getName());
+                        name_img_path_list.add(listFile[i].getAbsolutePath());
+                        currentImageFileIndex = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    private void load_ad_files(File dir) {
+
+        name_list.clear();
+        name_path_list.clear();
+        String extention = ".mp4";
+        File[] listFile = dir.listFiles();
+
+
+        if (listFile != null) {
+            for (int i = 0; i < listFile.length; i++) {
+
+                if (listFile[i].isDirectory()) {
+                    load_ad_files(listFile[i]);
+                } else {
+                    if (listFile[i].getName().endsWith(extention)) {
+                        name_list.add(listFile[i].getName());
+                        name_path_list.add(listFile[i].getAbsolutePath());
+
+                    }
+                }
+            }
+        }
+    }
+
+    Timer timerAnimationImage;
+    private  boolean isActivatedImageAnimation = false;
+    private void setupImageAnimationTimer(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mVideoView.setVisibility(View.GONE);
+                imgAdvertisement.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        if(timerAnimationImage != null) timerAnimationImage.cancel();
+
+        timerAnimationImage = new Timer();
+        TimerTask aTask = new TimerTask() {
+            @Override
+            public void run() {
+                if(isActivatedImageAnimation == true){
+                    if(currentImageFileIndex >=0 && currentImageFileIndex < name_img_path_list.size()){
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                File imgFile = new  File(name_img_path_list.get(currentImageFileIndex));
+                                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                                imgAdvertisement.setImageBitmap(myBitmap);
+                                currentImageFileIndex++;
+                            }
+                        });
+                    } else if(currentImageFileIndex >= name_img_path_list.size()){
+                        if(name_path_list.size() > 0) {
+                            isActivatedImageAnimation = false;
+
+                            currentAdFileIndex++;
+                            if(currentAdFileIndex >= name_path_list.size()) currentAdFileIndex = 0;
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    playVideoFromUSB(name_path_list.get(currentAdFileIndex));
+                                }
+                            });
+
+                            timerAnimationImage.cancel();
+                        }
+                        currentImageFileIndex = 0;
+
+                    }
+                }
+            }
+        };
+        timerAnimationImage.schedule(aTask, 200, 30000);
+    }
+
+    public void playVideoFromUSB(String path){
+        //isActivatedImageAnimation = false;
+        File aFile = new File(path);
+        if(aFile.exists()){
+            imgAdvertisement.setVisibility(View.GONE);
+            mVideoView.setVisibility(View.VISIBLE);
+            mVideoView.setVideoURI(Uri.parse(path));
+            mVideoView.start();
+        }else{
+            Log.d("DCAR", "Video is not existed");
+            //((MainActivity)getActivity()).fullScreenMode(false);
+            //((MainActivity)getActivity()).selectFragment(HOME_FRAGMENT_INDEX);
+            frameContent.setVisibility(View.VISIBLE);
+            frameAdvertisement.setVisibility(View.GONE);
+        }
+    }
+
+
+
+    public void processQuangCao(){
+        String roothPath = NPNGlobalMethods.loadKey(this, NPNConstants.SETTING_ROOT_PATH);
+        Log.d("DCAR", "Root path in Ad: " + roothPath);
+        match_folder = "quang_cao";
+        roothPath = findAdvertisementFolder(new File(roothPath));
+        Log.d("DCAR", "Root path QUANG CAO: " + roothPath);
+        if(roothPath.length() > 3){
+            load_ad_files(new File(roothPath));
+            load_img_files(new File(roothPath));
+
+
+            if(name_path_list.size() > 0){
+                currentAdFileIndex = 0;
+                playVideoFromUSB(name_path_list.get(currentAdFileIndex));
+                imgAdvertisement.setVisibility(View.GONE);
+                mVideoView.setVisibility(View.VISIBLE);
+
+                frameContent.setVisibility(View.GONE);
+                frameAdvertisement.setVisibility(View.VISIBLE);
+
+            } else if(name_img_path_list.size() > 0){
+                imgAdvertisement.setVisibility(View.VISIBLE);
+                mVideoView.pause();
+                mVideoView.setVisibility(View.GONE);
+
+                frameContent.setVisibility(View.GONE);
+                frameAdvertisement.setVisibility(View.VISIBLE);
+
+                //isActivatedImageAnimation = true;
+                //setupImageAnimationTimer();
+            }
+            else{
+                //((MainActivity)getActivity()).fullScreenMode(false);
+                //((MainActivity)getActivity()).selectFragment(HOME_FRAGMENT_INDEX);
+                frameAdvertisement.setVisibility(View.GONE);
+                frameContent.setVisibility(View.VISIBLE);
+                mVideoView.pause();
+            }
+        }else{
+            //((MainActivity)getActivity()).fullScreenMode(false);
+            //((MainActivity)getActivity()).selectFragment(HOME_FRAGMENT_INDEX);
+            frameAdvertisement.setVisibility(View.GONE);
+            frameContent.setVisibility(View.VISIBLE);
+            mVideoView.pause();
+        }
+    }
     int counterBackPress = 0;
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
@@ -917,7 +1197,20 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
                 counterBackPress = 0;
                 generateID();
             }
+            frameAdvertisement.setVisibility(View.GONE);
+            frameContent.setVisibility(View.VISIBLE);
+            mVideoView.pause();
         }
+
+        if(keyCode == KeyEvent.KEYCODE_2){
+            processQuangCao();
+            return true;
+        }
+        if(keyCode == KeyEvent.KEYCODE_3){
+
+            return true;
+        }
+
         return true;
     }
 

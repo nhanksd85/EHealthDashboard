@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "npn.npnlauncher.dcar",
+  "applicationId": "npn.npnlauncher.dcar.test",
   "variantName": "release",
   "elements": [
     {

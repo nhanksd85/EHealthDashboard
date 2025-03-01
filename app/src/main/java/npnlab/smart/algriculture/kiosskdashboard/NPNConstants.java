@@ -25,6 +25,15 @@ public class NPNConstants {
     public static final String backdoorPasscode = "069"; // ^_^
 
 
+    public static String SETTING_REFKEY_NAME = "dcar_settings";
+    public static String SETTING_ROOT_PATH = "setting_root_path";
+
+    public static String SETTING_TIVI_INDEX = "setting_tivi_index";
+
+    public static String SETTING_LAUNCHE_PACKAGE = "setting_launche_package";
+    public static String SETTING_YOUTUBE_PACKAGE = "setting_youtube_package";
+
+
     //public static String MegaLauncherRepo = "http://ubc.dauthutruyenhinh.com:2080/MegaLauncherRepo/TOPTECH/SANCO_CHUNHAT/version.txt";
 
 
