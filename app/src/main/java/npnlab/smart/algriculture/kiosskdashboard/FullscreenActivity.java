@@ -887,6 +887,12 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        counterBackPress = 0;
+    }
+
     private int[] timerCounter = new int[10];
     private int[] timerFlag = new int[10];
     private void setTimer(int index, int counter){
@@ -905,7 +911,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     int counterBackPress = 0;
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU || keyCode == KeyEvent.KEYCODE_1) {
+        if (keyCode == KeyEvent.KEYCODE_9) {
             counterBackPress++;
             if (counterBackPress > 5) {
                 counterBackPress = 0;
