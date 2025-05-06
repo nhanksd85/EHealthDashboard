@@ -42,437 +42,460 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
 
-    <RelativeLayout
-        android:visibility="gone"
-        android:id="@+id/fullscreen_ad"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <VideoView
-            android:id="@+id/videoViewAdvertisement"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-        <ImageView
-            android:id="@+id/imgAdvertisement"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"/>
-    </RelativeLayout>
+
     
 
     <FrameLayout
+
         android:id="@+id/fullscreen_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
         android:orientation="horizontal">
-        <ImageView
-            android:focusable="false"
-            android:src="@drawable/newtest2"
-            android:scaleType="fitXY"
-            android:id="@+id/image_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
-        <LinearLayout
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/fullscreen_ad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <VideoView
+                android:visibility="gone"
+                android:id="@+id/videoViewAdvertisement"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+            <ImageView
+                android:id="@+id/imgAdvertisement"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"/>
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/testData"
+                android:layout_marginTop="220dp"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:text = "abscdcscdsc">
+
+            </TextView>
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/fullscreen_content_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="30dp"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:visibility="visible">
+            <ImageView
+                android:focusable="false"
+                android:src="@drawable/newtest2"
+                android:scaleType="fitXY"
+                android:id="@+id/image_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <LinearLayout
-
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="0.1"
-                android:background="@color/transparent"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp"
-                android:layout_gravity="left">
-
-                <ImageView
-                    android:id="@+id/top_logo"
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.2"                        android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="5dp"
-                    android:src="@drawable/android_tv_white"
-                    android:scaleType="fitCenter"/>
+                android:layout_height="match_parent"
+                android:padding="30dp"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.6">
 
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.8"
-                    android:gravity="right"
-                    android:layout_marginRight="10dp">
-
-
-                    <DigitalClock
-                        android:id="@+id/digitalClock1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="45dp"
-                        android:layout_marginRight="20dp"
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="35dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnn_allapp"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:scaleType="fitCenter"
-                        android:background="@drawable/button_allapp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="20dp"/>
-
-                    <ImageButton
-                        android:id="@+id/btnn_folder"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:scaleType="fitCenter"
-                        android:background="@drawable/button_folder"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="20dp"/>
-
-
-                    <ImageButton
-                        android:id="@+id/btnn_setting"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:scaleType="fitCenter"
-                        android:background="@drawable/button_setting"
-                        android:layout_gravity="center_vertical"
-
-                        android:layout_marginRight="40sp"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="0.1"
+                    android:background="@color/transparent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    android:layout_gravity="left">
 
                     <ImageView
-                        android:id="@+id/imgWifiStatus"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/icon_wifi_3"/>
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="0.8"
-                android:background="@color/transparent"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.7">
-
-                </LinearLayout>
-                <LinearLayout
-                    android:visibility="gone"
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3">
-                    <WebView
-                        android:layout_width="match_parent"
+                        android:id="@+id/top_logo"
+                        android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:id = "@+id/webContent" >
+                        android:layout_weight="0.2"                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/android_tv_white"
+                        android:scaleType="fitCenter"/>
 
-                    </WebView>
-                </LinearLayout>
-                <!--layout for widget-->
-                <LinearLayout
-                    android:visibility="visible"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_margin="10dp"
-                    android:background="@color/transparent">
-
-                    <TextView
-                        android:id="@+id/txtCurrentDate"
-                        android:textColor="#fff"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="25dp"
-                        android:text="Hồ Chí Minh - 06 tháng 12"
-                        android:gravity = "start"/>
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginTop = "12dp"
-                        >
-                        <ImageView
-                            android:id = "@+id/imgIconMain"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:src="@drawable/weather_02" />
-                        <FrameLayout
-                            android:layout_width="72dp"
-                            android:layout_height="70dp">
-                            <TextView
-                                android:id = "@+id/txtTemperature"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start|center_vertical"
-                                android:text="30"
-                                android:textColor="#fff"
-                                android:textSize="45dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end|top"
-                                android:layout_marginTop="12dp"
-                                android:layout_marginLeft="5dp"
-                                android:text="°C"
-                                android:textColor="#fff"
-                                android:textSize="25dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-                        </FrameLayout>
-                        <FrameLayout
-                            android:layout_width="140dp"
-                            android:layout_height="70dp">
-                            <TextView
-                                android:id = "@+id/txtDescription"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Có mưa vài nơi"
-                                android:textColor="#fff"
-                                android:layout_marginTop="12dp"
-                                android:layout_marginStart="5dp"/>
-                            <TextView
-                                android:id = "@+id/txtHumidity"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="#fff"
-                                android:text="Độ ẩm 90%"
-                                android:layout_marginTop="30dp"
-                                android:layout_marginStart="5dp"/>
-                        </FrameLayout>
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6">
+
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.8"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp">
+
+
+                        <DigitalClock
+                            android:id="@+id/digitalClock1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="45dp"
+                            android:layout_marginRight="20dp"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:layout_gravity="center_vertical"
+                            android:textSize="35dp" />
+
+                        <ImageButton
+                            android:id="@+id/btnn_allapp"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:scaleType="fitCenter"
+                            android:background="@drawable/button_allapp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="20dp"/>
+
+                        <ImageButton
+                            android:id="@+id/btnn_folder"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:scaleType="fitCenter"
+                            android:background="@drawable/button_folder"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="20dp"/>
+
+
+                        <ImageButton
+                            android:id="@+id/btnn_setting"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:scaleType="fitCenter"
+                            android:background="@drawable/button_setting"
+                            android:layout_gravity="center_vertical"
+
+                            android:layout_marginRight="40sp"/>
+
+                        <ImageView
+                            android:id="@+id/imgWifiStatus"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/icon_wifi_3"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="0.8"
+                    android:background="@color/transparent"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.7">
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3">
+                        <WebView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id = "@+id/webContent" >
+
+                        </WebView>
+                    </LinearLayout>
+                    <!--layout for widget-->
                     <LinearLayout
                         android:visibility="visible"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_weight="0.5"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/T3"
-                                android:text="T3"
-                                android:textColor="#fff"
-                                android:textSize="20dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-                            <ImageView
-                                android:id = "@+id/imgT3"
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:src="@drawable/weather_01"/>
-                            <TextView
-                                android:id = "@+id/txtT3Max"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="31°"
-                                android:textColor="#fff"
-                                android:textSize="20dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-                            <TextView
-                                android:id = "@+id/txtT3Min"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="26°"
-                                android:textColor="#fff"
-                                android:textSize="20dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/T4"
-                                android:text="T4"
-                                android:textColor="#fff"
-                                android:textSize="20dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-                            <ImageView
-                                android:id = "@+id/imgT4"
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:src="@drawable/weather_07"/>
-                            <TextView
-                                android:id = "@+id/txtT4Max"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="31°"
-                                android:textColor="#fff"
-                                android:textSize="20dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-                            <TextView
-                                android:id = "@+id/txtT4Min"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="26°"
-                                android:textColor="#fff"
-                                android:textSize="20dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/T5"
-                                android:text="T5"
-                                android:textColor="#fff"
-                                android:textSize="20dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-                            <ImageView
-                                android:id = "@+id/imgT5"
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:src="@drawable/weather_22"/>
-                            <TextView
-                                android:id = "@+id/txtT5Max"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="32°"
-                                android:textColor="#fff"
-                                android:textSize="20dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-                            <TextView
-                                android:id = "@+id/txtT5Min"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="26°"
-                                android:textColor="#fff"
-                                android:textSize="20dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/T6"
-                                android:text="T6"
-                                android:textColor="#fff"
-                                android:textSize="20dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-                            <ImageView
-                                android:id = "@+id/imgT6"
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:src="@drawable/weather_31"/>
-                            <TextView
-                                android:id = "@+id/txtT6Max"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="32°"
-                                android:textColor="#fff"
-                                android:textSize="20dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-                            <TextView
-                                android:id = "@+id/txtT6Min"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="26°"
-                                android:textColor="#fff"
-                                android:textSize="20dp"
-                                android:fontFamily="sans-serif-condensed-light" />
-
-                        </LinearLayout>
-                    </LinearLayout>
-
-
-
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:focusable="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/transparent">
-
-                <HorizontalScrollView
-                    android:focusable="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_gravity="bottom">
+                        android:layout_height="match_parent"
 
-                        <LinearLayout
-                            android:id="@+id/horizontal_list"
-                            android:orientation="horizontal"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_margin="10dp"
+                        android:background="@color/transparent">
+
+                        <TextView
+                            android:id="@+id/txtCurrentDate"
+                            android:textColor="#fff"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="0dp"
-                            android:layout_gravity="bottom">
+                            android:textSize="25dp"
+                            android:text="Hồ Chí Minh - 06 tháng 12"
+                            android:gravity = "start"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginTop = "12dp"
+                            >
+                            <ImageView
+                                android:id = "@+id/imgIconMain"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:src="@drawable/weather_02" />
+                            <FrameLayout
+                                android:layout_width="72dp"
+                                android:layout_height="70dp">
+                                <TextView
+                                    android:id = "@+id/txtTemperature"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start|center_vertical"
+                                    android:text="30"
+                                    android:textColor="#fff"
+                                    android:textSize="45dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end|top"
+                                    android:layout_marginTop="12dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:text="°C"
+                                    android:textColor="#fff"
+                                    android:textSize="25dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
+                            </FrameLayout>
+                            <FrameLayout
+                                android:layout_width="140dp"
+                                android:layout_height="70dp">
+                                <TextView
+                                    android:id = "@+id/txtDescription"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Có mưa vài nơi"
+                                    android:textColor="#fff"
+                                    android:layout_marginTop="12dp"
+                                    android:layout_marginStart="5dp"/>
+                                <TextView
+                                    android:id = "@+id/txtHumidity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#fff"
+                                    android:text="Độ ẩm 90%"
+                                    android:layout_marginTop="30dp"
+                                    android:layout_marginStart="5dp"/>
+                            </FrameLayout>
                         </LinearLayout>
-                    </LinearLayout>
-                </HorizontalScrollView>
+                        <LinearLayout
+                            android:visibility="visible"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_weight="0.5"
+                            android:orientation="horizontal">
+                            <LinearLayout
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/T3"
+                                    android:text="T3"
+                                    android:textColor="#fff"
+                                    android:textSize="20dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
+                                <ImageView
+                                    android:id = "@+id/imgT3"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:src="@drawable/weather_01"/>
+                                <TextView
+                                    android:id = "@+id/txtT3Max"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="31°"
+                                    android:textColor="#fff"
+                                    android:textSize="20dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
+                                <TextView
+                                    android:id = "@+id/txtT3Min"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="26°"
+                                    android:textColor="#fff"
+                                    android:textSize="20dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/T4"
+                                    android:text="T4"
+                                    android:textColor="#fff"
+                                    android:textSize="20dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
+                                <ImageView
+                                    android:id = "@+id/imgT4"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:src="@drawable/weather_07"/>
+                                <TextView
+                                    android:id = "@+id/txtT4Max"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="31°"
+                                    android:textColor="#fff"
+                                    android:textSize="20dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
+                                <TextView
+                                    android:id = "@+id/txtT4Min"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="26°"
+                                    android:textColor="#fff"
+                                    android:textSize="20dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
 
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/T5"
+                                    android:text="T5"
+                                    android:textColor="#fff"
+                                    android:textSize="20dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
+                                <ImageView
+                                    android:id = "@+id/imgT5"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:src="@drawable/weather_22"/>
+                                <TextView
+                                    android:id = "@+id/txtT5Max"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="32°"
+                                    android:textColor="#fff"
+                                    android:textSize="20dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
+                                <TextView
+                                    android:id = "@+id/txtT5Min"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="26°"
+                                    android:textColor="#fff"
+                                    android:textSize="20dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/T6"
+                                    android:text="T6"
+                                    android:textColor="#fff"
+                                    android:textSize="20dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
+                                <ImageView
+                                    android:id = "@+id/imgT6"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:src="@drawable/weather_31"/>
+                                <TextView
+                                    android:id = "@+id/txtT6Max"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="32°"
+                                    android:textColor="#fff"
+                                    android:textSize="20dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
+                                <TextView
+                                    android:id = "@+id/txtT6Min"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="26°"
+                                    android:textColor="#fff"
+                                    android:textSize="20dp"
+                                    android:fontFamily="sans-serif-condensed-light" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+
+
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
 
                 <LinearLayout
-                    android:visibility="gone"
-                    android:id="@+id/horizontal_list2"
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:focusable="false"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="0dp"
-                    android:layout_gravity="bottom">
+                    android:orientation="vertical"
+                    android:background="@color/transparent">
+
+                    <HorizontalScrollView
+                        android:focusable="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_gravity="bottom">
+
+                            <LinearLayout
+                                android:id="@+id/horizontal_list"
+                                android:orientation="horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="0dp"
+                                android:layout_gravity="bottom">
+                            </LinearLayout>
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/horizontal_list2"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_gravity="bottom">
+                    </LinearLayout>
+
+
                 </LinearLayout>
 
 
             </LinearLayout>
+        </FrameLayout>
 
 
-        </LinearLayout>
 
 
     </FrameLayout>

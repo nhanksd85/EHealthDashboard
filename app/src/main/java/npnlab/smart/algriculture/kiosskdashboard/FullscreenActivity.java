@@ -18,6 +18,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -29,6 +30,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,6 +45,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import org.json.JSONArray;
@@ -51,12 +54,14 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
@@ -202,6 +207,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     ImageButton btnAllApp, btnFolder, btnSetting;
     FrameLayout frameContent;
     RelativeLayout frameAdvertisement;
+    TextView testData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -221,6 +227,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         mVisible = true;
         mControlsView = binding.fullscreenContentControls;
         mContentView = binding.fullscreenContent;
+
 
         // Set up the user interaction to manually show or hide the system UI.
 //        mContentView.setOnClickListener(new View.OnClickListener() {
@@ -281,14 +288,15 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         btnFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchAppFromPackageName("com.droidlogic.FileBrower");
-                //launchAppFromPackageName("com.android.rockchip");
+                //launchAppFromPackageName("com.droidlogic.FileBrower");
+                launchAppFromPackageName("com.android.rockchip");
             }
         });
 
         btnSetting = findViewById(R.id.btnn_setting);
         btnSetting.setOnClickListener(v -> {
-            launchAppFromPackageName("com.android.tv.settings");
+            //launchAppFromPackageName("com.android.tv.settings");
+            launchAppFromPackageName("com.android.settings");
         });
 
         AudioManager am =
@@ -303,29 +311,45 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         getUSB();
         mVideoView = findViewById(R.id.videoViewAdvertisement);
         imgAdvertisement = findViewById(R.id.imgAdvertisement);
-        frameContent = findViewById(R.id.fullscreen_content);
+        frameContent = findViewById(R.id.fullscreen_content_2);
         frameAdvertisement = findViewById(R.id.fullscreen_ad);
+        testData = findViewById(R.id.testData);
 
         mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 //TODO: move to next video
                 if(name_img_path_list.size() > 0){
-                    //isActivatedImageAnimation = true;
+                    isActivatedImageAnimation = true;
                     currentImageFileIndex = 0;
-
-                    //setupImageAnimationTimer();
+                    mVideoView.pause();
+                    mVideoView.setVisibility(View.GONE);
+                    imgAdvertisement.setVisibility(View.VISIBLE);
+                    setupImageAnimationTimer();
 
                 }else {
                     if (name_path_list.size() > 0) {
                         currentAdFileIndex++;
                         if (currentAdFileIndex >= name_path_list.size()) currentAdFileIndex = 0;
+                        mVideoView.setVisibility(View.VISIBLE);
+                        imgAdvertisement.setVisibility(View.GONE);
                         playVideoFromUSB(name_path_list.get(currentAdFileIndex));
 
                     }
                 }
             }
         });
+
+        mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                mVideoView.pause();
+                frameAdvertisement.setVisibility(View.GONE);
+                frameContent.setVisibility(View.VISIBLE);
+                return true;
+            }
+        });
+
 
     }
 
@@ -391,7 +415,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     CountDownTimer countDownTimer;
 
     public void usingCountDownTimer() {
-        countDownTimer = new CountDownTimer(Long.MAX_VALUE, 10000) {
+        countDownTimer = new CountDownTimer(Long.MAX_VALUE, 100) {
 
             // This is called after every 10 sec interval.
             public void onTick(long millisUntilFinished) {
@@ -404,6 +428,33 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
                     requestWeatherData();
                     setTimer(1, 10 * 6);
                 }
+
+                if(isActivatedImageAnimation == true){
+                    if(timerFlag[3] == 1) {
+                        setTimer(3, 3);
+                        if (currentImageFileIndex >= 0 && currentImageFileIndex < name_img_path_list.size()) {
+
+                            imgAdvertisement.setImageBitmap(decodeSampledBitmap(name_img_path_list.get(currentImageFileIndex)));
+                            currentImageFileIndex++;
+
+
+                        } else if (currentImageFileIndex >= name_img_path_list.size()) {
+                            if (name_path_list.size() > 0) {
+                                isActivatedImageAnimation = false;
+
+                                currentAdFileIndex++;
+                                if (currentAdFileIndex >= name_path_list.size())
+                                    currentAdFileIndex = 0;
+
+                                playVideoFromUSB(name_path_list.get(currentAdFileIndex));
+
+                            }
+                            currentImageFileIndex = 0;
+
+                        }
+                    }
+                }
+
                 timerRun();
             }
 
@@ -463,6 +514,56 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
     }
 
 
+
+
+    private int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    private Bitmap decodeSampledBitmap(String pathName,
+                                       int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(pathName, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(pathName, options);
+    }
+
+    //I added this to have a good approximation of the screen size:
+    private Bitmap decodeSampledBitmap(String pathName) {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        return decodeSampledBitmap(pathName, width, height);
+    }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -518,8 +619,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
      * previously scheduled calls.
      */
     private void delayedHide(int delayMillis) {
-        //mHideHandler.removeCallbacks(mHideRunnable);
-        //mHideHandler.postDelayed(mHideRunnable, delayMillis);
+        mHideHandler.removeCallbacks(mHideRunnable);
+        mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
     LinearLayout horizontalView;
@@ -666,7 +767,7 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         //Launch an application from package name
         activeAdminPackage = packageName;
         if(packageName.contains("NPNAppManager") ||
-                packageName.contains("tv.settings") ||
+                packageName.contains("settings") ||
                 packageName.contains("droidlogic.FileBrower") ||
                 packageName.contains("com.android.rockchip") ||
                 packageName.contains("vn.ubc.ubcstore")) {
@@ -682,7 +783,9 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
                             peekAvailableContext().startActivity(launchIntent);
                         }
                     }
+                    hide();
                 }
+
             });
         }else {
             Intent launchIntent = peekAvailableContext().getPackageManager().getLaunchIntentForPackage(packageName);
@@ -973,10 +1076,10 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         counterBackPress = 0;
     }
 
-    private int[] timerCounter = new int[10];
+    private long[] timerCounter = new long[10];
     private int[] timerFlag = new int[10];
     private void setTimer(int index, int counter){
-        timerCounter[index] = counter;
+        timerCounter[index] = counter * 100;
         timerFlag[index] = 0;
     }
     private void timerRun(){
@@ -1079,48 +1182,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
             }
         });
 
-
-        if(timerAnimationImage != null) timerAnimationImage.cancel();
-
-        timerAnimationImage = new Timer();
-        TimerTask aTask = new TimerTask() {
-            @Override
-            public void run() {
-                if(isActivatedImageAnimation == true){
-                    if(currentImageFileIndex >=0 && currentImageFileIndex < name_img_path_list.size()){
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                File imgFile = new  File(name_img_path_list.get(currentImageFileIndex));
-                                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                                imgAdvertisement.setImageBitmap(myBitmap);
-                                currentImageFileIndex++;
-                            }
-                        });
-                    } else if(currentImageFileIndex >= name_img_path_list.size()){
-                        if(name_path_list.size() > 0) {
-                            isActivatedImageAnimation = false;
-
-                            currentAdFileIndex++;
-                            if(currentAdFileIndex >= name_path_list.size()) currentAdFileIndex = 0;
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    playVideoFromUSB(name_path_list.get(currentAdFileIndex));
-                                }
-                            });
-
-                            timerAnimationImage.cancel();
-                        }
-                        currentImageFileIndex = 0;
-
-                    }
-                }
-            }
-        };
-        timerAnimationImage.schedule(aTask, 200, 30000);
+        isActivatedImageAnimation = true;
+        timerFlag[3] = 1;
     }
 
     public void playVideoFromUSB(String path){
@@ -1140,9 +1203,97 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
         }
     }
 
+    public void processRandomMovies(){
+        delayedHide(200);
+        int category = getRandomNumber(0, 3);
+        if(category == 0){
+            match_folder = "hanh_dong";
+        }else if(category == 1){
+            match_folder = "hinh_su";
+        }else if(category == 2){
+            match_folder = "vien_tuong";
+        }else if(category == 3){
+            match_folder = "viet_nam";
+        }
 
+        String roothPath = NPNGlobalMethods.loadKey(this, NPNConstants.SETTING_ROOT_PATH);
+        Log.d("DCAR", "Root path in Ad: " + roothPath);
+
+        roothPath = findAdvertisementFolder(new File(roothPath));
+        Log.d("DCAR", "Root path IM LANG: " + roothPath);
+
+        if(roothPath.length() > 3) {
+            load_ad_files(new File(roothPath));
+            load_img_files(new File(roothPath));
+            if(name_path_list.size() > 0){
+
+                currentAdFileIndex = getRandomNumber(0, name_img_list.size()-1);
+
+                if(currentAdFileIndex >= name_img_list.size()-1) {
+                    currentAdFileIndex = 0;
+                }
+
+                playVideoFromUSB(name_path_list.get(currentAdFileIndex));
+                imgAdvertisement.setVisibility(View.GONE);
+                mVideoView.setVisibility(View.VISIBLE);
+                frameContent.setVisibility(View.GONE);
+                frameAdvertisement.setVisibility(View.VISIBLE);
+
+            }
+        }
+
+    }
+
+    public void processImlang(){
+        delayedHide(200);
+        String roothPath = NPNGlobalMethods.loadKey(this, NPNConstants.SETTING_ROOT_PATH);
+        Log.d("DCAR", "Root path in Ad: " + roothPath);
+        match_folder = "im_lang";
+        roothPath = findAdvertisementFolder(new File(roothPath));
+        Log.d("DCAR", "Root path IM LANG: " + roothPath);
+        if(roothPath.length() > 3){
+            load_ad_files(new File(roothPath));
+            load_img_files(new File(roothPath));
+
+
+            if(name_path_list.size() > 0){
+                currentAdFileIndex = 0;
+                playVideoFromUSB(name_path_list.get(currentAdFileIndex));
+                imgAdvertisement.setVisibility(View.GONE);
+                mVideoView.setVisibility(View.VISIBLE);
+
+                frameContent.setVisibility(View.GONE);
+                frameAdvertisement.setVisibility(View.VISIBLE);
+
+            } else if(name_img_path_list.size() > 0){
+                imgAdvertisement.setVisibility(View.VISIBLE);
+                mVideoView.pause();
+                mVideoView.setVisibility(View.GONE);
+
+                frameContent.setVisibility(View.GONE);
+                frameAdvertisement.setVisibility(View.VISIBLE);
+
+                isActivatedImageAnimation = true;
+                setupImageAnimationTimer();
+            }
+            else{
+                //((MainActivity)getActivity()).fullScreenMode(false);
+                //((MainActivity)getActivity()).selectFragment(HOME_FRAGMENT_INDEX);
+                frameAdvertisement.setVisibility(View.GONE);
+                frameContent.setVisibility(View.VISIBLE);
+                mVideoView.pause();
+            }
+        }else{
+            //((MainActivity)getActivity()).fullScreenMode(false);
+            //((MainActivity)getActivity()).selectFragment(HOME_FRAGMENT_INDEX);
+            frameAdvertisement.setVisibility(View.GONE);
+            frameContent.setVisibility(View.VISIBLE);
+            mVideoView.pause();
+        }
+    }
 
     public void processQuangCao(){
+        delayedHide(200);
         String roothPath = NPNGlobalMethods.loadKey(this, NPNConstants.SETTING_ROOT_PATH);
         Log.d("DCAR", "Root path in Ad: " + roothPath);
         match_folder = "quang_cao";
@@ -1170,8 +1321,8 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
                 frameContent.setVisibility(View.GONE);
                 frameAdvertisement.setVisibility(View.VISIBLE);
 
-                //isActivatedImageAnimation = true;
-                //setupImageAnimationTimer();
+                isActivatedImageAnimation = true;
+                setupImageAnimationTimer();
             }
             else{
                 //((MainActivity)getActivity()).fullScreenMode(false);
@@ -1201,14 +1352,22 @@ public class FullscreenActivity extends AppCompatActivity implements NPNHomeView
             frameContent.setVisibility(View.VISIBLE);
             mVideoView.pause();
         }
-
+        if(keyCode == KeyEvent.KEYCODE_1){
+            processRandomMovies();
+            return true;
+        }
         if(keyCode == KeyEvent.KEYCODE_2){
             processQuangCao();
             return true;
         }
         if(keyCode == KeyEvent.KEYCODE_3){
-
+            processImlang();
             return true;
+        }
+        if(keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE){
+            mVideoView.pause();
+            frameAdvertisement.setVisibility(View.GONE);
+            frameContent.setVisibility(View.VISIBLE);
         }
 
         return true;

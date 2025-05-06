@@ -340,12 +340,14 @@ public class NPNGlobalMethods {
         btnCancel.setOnClickListener(view -> {
             dialog.cancel();
             //((MainActivity)context).goFullscreen();
+            handler.onOkButtonClicked("  ", "  ");
         });
 
         Point size = NPNGlobalMethods.getScreenSize((Activity) context);
 
         dialog.setOnCancelListener(dialogInterface -> {
             //((MainActivity)context).goFullscreen();
+            handler.onOkButtonClicked("  ", "  ");
         });
 
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_bkg);
